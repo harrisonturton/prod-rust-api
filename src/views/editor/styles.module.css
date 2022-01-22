@@ -1,7 +1,0 @@
-@import "../../components/styles/styles.module.css";
-
-.content {
-    composes: myClass from "../../components/styles/styles.module.css";
-    background-color: var(--secondary);
-    font-size: var(--fontSizeMd);
-}

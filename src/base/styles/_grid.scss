@@ -1,0 +1,15 @@
+$grid-baseline: 8px;
+$space-xxxs: calc($grid-baseline * 0.5);
+$space-xxs: calc($grid-baseline * 1);
+$space-xs: calc($grid-baseline * 1.5);
+$space-sm: calc($grid-baseline * 2);
+$space-md: calc($grid-baseline * 3);
+$space-lg: calc($grid-baseline * 4);
+
+$font-size-base: 10px;
+$font-size-micro: calc($font-size-base * 1);
+$font-size-tiny: calc($font-size-base * 1.1);
+$font-size-sm: calc($font-size-base * 1.2);
+$font-size-md: calc($font-size-base * 1.4);
+$font-size-lg: calc($font-size-base * 1.6);
+$font-size-xl: calc($font-size-base * 2.1);

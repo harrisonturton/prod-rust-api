@@ -1,4 +1,4 @@
-import styles from "./styles.module.css";
+import styles from "./styles.module.scss";
 
 const FileTree: React.VFC = () => (
     <div className={styles.container}>
