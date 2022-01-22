@@ -1,2 +1,2 @@
-import { default as HomeImpl } from "../ui/pages/home";
+import { default as HomeImpl } from "views/home";
 export default HomeImpl;

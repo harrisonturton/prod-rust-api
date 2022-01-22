@@ -1,2 +1,2 @@
-import { default as EditorImpl } from "../ui/pages/editor";
+import { default as EditorImpl } from "views/editor";
 export default EditorImpl;

@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import FileTree from "components/file-tree";
 import styles from "./styles.module.css";
 
 const Editor: NextPage = () => (
@@ -9,7 +10,7 @@ const Editor: NextPage = () => (
             <meta name="description" content="Editor page"/>
         </Head>
         <main className={styles.content}>
-            <h1>Editor</h1>
+            <p>Editor</p>
         </main>
     </div>
 );
