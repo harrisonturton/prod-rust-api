@@ -1,6 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "./styles.module.css";
+import Link from "next/link";
+import { getEditorRoute } from "base/routes";
+import styles from "./styles.module.scss";
 
 const Home: NextPage = () => (
     <div>
@@ -9,7 +11,14 @@ const Home: NextPage = () => (
             <meta name="description" content="Home page"/>
         </Head>
         <main className={styles.content}>
-            <h1>Home</h1>
+            <span className={styles.homeLabel}>Jump to:</span>
+            <ul>
+                <li>
+                    <Link href={getEditorRoute()}>
+                        <a className={styles.homeLabel}>Editor</a>
+                    </Link>
+                </li>
+            </ul>
         </main>
     </div>
 );

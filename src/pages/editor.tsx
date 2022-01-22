@@ -1,2 +1,2 @@
-import { default as EditorImpl } from "views/editor";
-export default EditorImpl;
+import EditorView from "views/editor";
+export default EditorView;
