@@ -9,6 +9,9 @@ interface FileTreeProps {
 
 const FileTree = ({ items, toggleNode }: FileTreeProps ) => (
     <div className={styles.root}>
+        <div className={styles.project}>
+            <span className={styles.projectLabel}>PROJECT</span>
+        </div>
         {items.map(item => {
             switch (item.kind) {
                 case "file":

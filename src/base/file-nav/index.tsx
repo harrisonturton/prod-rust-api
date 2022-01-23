@@ -14,7 +14,7 @@ const initialState: FileTreeState = {
                     kind: "file",
                     id: "1-1",
                     label: "README.md",
-                    active: false,
+                    active: true,
                 },
                 {
                     kind: "folder",
@@ -43,7 +43,7 @@ const initialState: FileTreeState = {
             kind: "file",
             id: "2",
             label: "Notes",
-            active: true,
+            active: false,
         },
     ]
 };
