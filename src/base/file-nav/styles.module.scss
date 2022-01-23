@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
 
-    background-color: color.scale($gray-800, $lightness: -15%);
+    background-color: color.scale($gray-800, $lightness: -20%);
     width: calc($grid-baseline * 23);
     padding-bottom: $space-xs;
     border-right: 1px solid color.scale($gray-800, $lightness: 10%);

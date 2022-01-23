@@ -6,6 +6,8 @@ $space-sm: calc($grid-baseline * 2);
 $space-md: calc($grid-baseline * 3);
 $space-lg: calc($grid-baseline * 4);
 
+$border-radius-sm: calc($grid-baseline * 0.5);
+
 @mixin page-root {
     width: 100vw;
     height: 100vh;
