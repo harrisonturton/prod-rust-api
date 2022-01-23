@@ -1,0 +1,9 @@
+@use "sass:color";
+@import "base/styles/colors";
+@import "base/styles/grid";
+
+.root {
+    background-color: color.scale($gray-800, $lightness: -25%);
+    width: calc($grid-baseline * 7);
+    height: 100%;
+}

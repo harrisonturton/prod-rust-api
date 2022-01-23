@@ -1,6 +1,16 @@
-// Styles that are imported onto every page.
+@import "./_colors";
+@import "./_grid";
+@import "./_font";
 
-html, body, * {
+* {
     margin: 0px;
     padding: 0px;
+
+    color: $white;
+    font-size: $font-size-base;
+    font-family: $font-family-default;
+}
+
+html, body {
+    background-color: $gray-900;
 }

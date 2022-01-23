@@ -1,0 +1,11 @@
+@use "sass:color";
+@import "base/styles/_colors";
+@import "base/styles/_grid";
+@import "base/styles/_font";
+
+.root {
+    @include page-root;
+    display: flex;
+    flex-direction: horizontal;
+    background-color: color.scale($gray-800, $lightness: -30%);
+}
