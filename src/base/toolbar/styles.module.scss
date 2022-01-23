@@ -1,0 +1,33 @@
+@use "sass:color";
+@import "base/styles/colors";
+@import "base/styles/grid";
+@import "base/styles/font";
+
+.toolbar {
+    width: 100%;
+    display: flex;
+    height: $space-md;
+    background-color: color.scale($gray-800, $lightness: -20%);
+    border-bottom: 1px solid color.scale($gray-800, $lightness: 10%);
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: $gray-400;
+    font-size: $font-size-sm;
+    background-color: inherit;
+    padding-left: $space-xxs;
+    padding-right: $space-xxs;
+
+    &:hover {
+        cursor: pointer;
+        background-color: color.scale($gray-800, $lightness: 10%);
+    }
+
+    &:active {
+        cursor: pointer;
+        background-color: transparent;
+    }
+}

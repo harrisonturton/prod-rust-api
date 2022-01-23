@@ -6,6 +6,13 @@
 .root {
     @include page-root;
     display: flex;
-    flex-direction: horizontal;
+    flex-direction: column;
     background-color: color.scale($gray-800, $lightness: -30%);
+}
+
+.mainContent {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: horizontal;
+    align-items: stretch;
 }

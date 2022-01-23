@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import TabNav from "base/tab-nav";
+import Toolbar from "base/toolbar";
 import createFileTree from "base/file-nav";
 import styles from "./styles.module.scss";
 
@@ -13,8 +14,11 @@ const Editor: NextPage = () => {
                 <meta name="description" content="Editor page"/>
             </Head>
             <main className={styles.root}>
-                <TabNav/>
-                <FileTree/>
+                <Toolbar/>
+                <section className={styles.mainContent}>
+                    <TabNav/>
+                    <FileTree/>
+                </section>
             </main>
         </div>
     );
