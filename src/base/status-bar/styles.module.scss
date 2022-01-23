@@ -1,0 +1,19 @@
+@use "sass:color";
+@import "base/styles/colors";
+@import "base/styles/grid";
+@import "base/styles/font";
+
+.statusBar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: $space-sm;
+    background-color: color.scale($gray-800, $lightness: -50%);
+    color: white;
+    padding-left: $space-xxxs;
+
+    & span {
+        color: $gray-500;
+        font-size: $font-size-xs;
+    }
+}

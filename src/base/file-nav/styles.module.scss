@@ -3,14 +3,44 @@
 @import "base/styles/grid";
 @import "base/styles/font";
 
+.dragHandleMouseTarget {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: calc(-1 * $space-sm / 2);
+    bottom: 0;
+    width: $space-sm;
+    display: flex;
+    justify-content: center;
+
+    &:hover {
+        cursor: grab;
+    }
+
+    &:hover > .dragHandleIndicator {
+        transform: scaleX(3);
+        opacity: 1;
+    }
+}
+
+.dragHandleIndicator {
+    width: 1px;
+    height: 100%;
+    background-color: $gray-700;
+    opacity: 0;
+}
+
 .root {
     display: flex;
     flex-direction: column;
+    position: relative;
 
     background-color: color.scale($gray-800, $lightness: -20%);
     width: calc($grid-baseline * 23);
     padding-bottom: $space-xs;
-    border-right: 1px solid color.scale($gray-800, $lightness: 10%);
+    border-right: 1px solid color.scale($gray-800, $lightness: -0%);
+    z-index: 0;
+    user-select: none;
 }
 
 .project {
@@ -19,12 +49,11 @@
     width: 100%;
     height: $space-md;
     padding-top: $space-xxxs;
-    padding-bottom: $space-xxxs;
 }
 
 .projectLabel {
     padding-left: $space-xs;
-    font-size: $font-size-xs;
+    font-size: $font-size-xxs;
     font-weight: 500;
     letter-spacing: 0.3px;
     color: color.scale($gray-500, $lightness: 20%);
@@ -81,7 +110,7 @@
 .fileItemLabel {
     color: color.scale($gray-400, $lightness: 10%);
     font-size: $font-size-sm;
-    padding-left: $space-xxs;
+    padding-left: $space-xxxs;
     height: 100%;
     display: flex;
     align-items: center;
@@ -90,21 +119,13 @@
 .folderIcon {
     fill: $gray-500;
     width: $space-xs;
-    padding-right: $space-xxxs;
+    padding-right: $space-xxs;
 }
 
 .fileIcon {
-    width: $space-xxs;
-    height: $space-xxs;
-    border-radius: 100%;
-    background-color: $gray-700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    & .fileIconCharacter {
-        font-size: $font-size-md;
-    }
+    fill: $gray-700;
+    width: $space-xs;
+    padding-right: $space-xxxs;
 }
 
 .folderItem {
@@ -115,29 +136,3 @@
         cursor: pointer;
     }
 }
-
-/*
-.labelRoot {
-    display: flex;
-    align-items: center;
-    padding-left: $space-xs;
-    padding-right: $space-xs;
-
-    &:hover {
-        cursor: pointer;
-        background: color.scale($gray-700, $lightness: -25%);
-    }
-}
-
-.label {
-    display: block;
-    font-size: $font-size-sm;
-    height: calc($space-sm);
-}
-
-.directory {
-    display: block;
-    width: 12px;
-    padding-right: $space-xxxs;
-    fill: $gray-400;
-}*/

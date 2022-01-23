@@ -19,7 +19,7 @@ const initialState: FileTreeState = {
                 {
                     kind: "folder",
                     id: "1-2",
-                    label: "Notebooks",
+                    label: "notebooks",
                     collapsed: false,
                     active: false,
                     children: [
@@ -35,15 +35,48 @@ const initialState: FileTreeState = {
                             label: "notebook.ipnyb",
                             active: false,
                         },
+                        {
+                            kind: "file",
+                            id: "2",
+                            label: "Notes.docx",
+                            active: false,
+                        },
+                    ]
+                },
+                {
+                    kind: "folder",
+                    id: "1-3",
+                    label: "data",
+                    collapsed: false,
+                    active: false,
+                    children: [
+                        {
+                            kind: "file",
+                            id: "1-3-1",
+                            label: "temperature.csv",
+                            active: false,
+                        },
+                        {
+                            kind: "file",
+                            id: "1-3-2",
+                            label: "tempature2.csv",
+                            active: false,
+                        },
+                        {
+                            kind: "file",
+                            id: "1-3-3",
+                            label: "readings.xlsx",
+                            active: false,
+                        },
+                        {
+                            kind: "file",
+                            id: "1-3-4",
+                            label: "mappings.geojson",
+                            active: false,
+                        },
                     ]
                 },
             ],
-        },
-        {
-            kind: "file",
-            id: "2",
-            label: "Notes",
-            active: false,
         },
     ]
 };

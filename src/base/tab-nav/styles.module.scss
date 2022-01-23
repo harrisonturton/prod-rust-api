@@ -4,7 +4,6 @@
 
 .root {
     background-color: color.scale($gray-800, $lightness: -25%);
-    border-right: 1px solid color.scale($gray-800, $lightness: 0%);
     width: calc($grid-baseline * 7);
     display: flex;
     flex-direction: column;
@@ -21,7 +20,7 @@
 
     &:hover {
         cursor: pointer;
-        background-color: color.scale($gray-800, $lightness: 10%);
+        opacity: 0.5;
     }
 
     &:active {
