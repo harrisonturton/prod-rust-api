@@ -1,0 +1,14 @@
+syntax = "proto3";
+package document_service;
+
+message GetFileTreeRequest {
+	string user_id = 1;
+}
+
+message GetFileTreeResponse {
+	string response = 1;
+}
+
+service DocumentService {
+	rpc getFileTree (GetFileTreeRequest) returns (GetFileTreeResponse);
+}
