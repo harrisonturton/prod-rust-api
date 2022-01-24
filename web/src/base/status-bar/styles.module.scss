@@ -8,7 +8,8 @@
     display: flex;
     align-items: center;
     height: $space-sm;
-    background-color: color.scale($gray-800, $lightness: -50%);
+    background-color: color.scale($gray-800, $lightness: -25%);
+    border-top: 1px solid color.scale($gray-800, $lightness: -0%);
     color: white;
     padding-left: $space-xxxs;
 

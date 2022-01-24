@@ -7,7 +7,7 @@
     @include page-root;
     display: flex;
     flex-direction: column;
-    background-color: color.scale($gray-800, $lightness: -30%);
+    background-color: color.scale($gray-800, $lightness: -25%);
 }
 
 .mainContent {
@@ -15,4 +15,10 @@
     flex-grow: 1;
     flex-direction: horizontal;
     align-items: stretch;
+}
+
+.fileContainer {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
 }
