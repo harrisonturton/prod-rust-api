@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS session;
+
+CREATE TABLE users (
+    private_id SERIAL PRIMARY KEY,
+    id CHAR(11) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    hash CHAR(128) NOT NULL
+);
+
+CREATE TABLE session (
+    private_id SERIAL PRIMARY KEY,
+    user_id CHAR(11) NOT NULL,
+    hash CHAR(128) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
