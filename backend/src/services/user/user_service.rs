@@ -42,7 +42,7 @@ pub async fn create_user(db: &PgPool, req: CreateUserRequest) -> Option<CreateUs
     "#;
     let email = req.email;
     let id = generate_id();
-    let hash = String::from("password-hash");
+    let hash = String::from("password-hash"); // TODO(harry): implement hashing
     let row: (String, String) = sqlx::query_as(query)
         .bind(id)
         .bind(email)

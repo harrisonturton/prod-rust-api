@@ -11,10 +11,20 @@ pub fn start(listener: TcpListener, db_pool: PgPool) -> Result<Server, io::Error
     let server = HttpServer::new(move || {
         App::new()
             .wrap(Logger::default())
+            // Each thread gets access to the PgPool and can request connections
+            // from it. One connection for each service? So services * threads
+            // connections. Assume 15 services and 16 threads on server box...
+            // 240 connections. Feels too high? Especially if scale
+            // horizontally. There is no reason for services within a single
+            // thread to have multiple database connections because they cannot
+            // run concurrently. Instead, have one database connection per
+            // thread, and share a refernce to this among services. Doesn't need
+            // to be threadsafe, since it's within a single thread, so can use
+            // Rc.
+            .app_data(pool.clone())
             .configure(services::health::configure)
             .configure(services::user::configure)
             .configure(services::auth::configure)
-            .app_data(pool.clone())
     })
     .listen(listener)?
     .run();
