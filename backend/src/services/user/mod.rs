@@ -1,4 +1,5 @@
 mod user_api;
+mod user_id_generator;
 mod user_model;
 mod user_service;
 
