@@ -1,8 +1,24 @@
+use super::user_api::ListUsersResponse;
 use super::user_api::{CreateUserRequest, CreateUserResponse};
 use super::user_api::{FindUserRequest, FindUserResponse};
 use super::user_id_generator::generate_id;
 use super::user_model::User;
 use sqlx::PgPool;
+
+pub async fn list_users(db: &PgPool) -> Option<ListUsersResponse> {
+    let query = r#"
+        SELECT id, email FROM users
+    "#;
+    let rows: Vec<(String, String)> = sqlx::query_as(query).fetch_all(db).await.ok()?;
+    let users = rows
+        .into_iter()
+        .map(|row: (String, String)| User {
+            id: row.0,
+            email: row.1,
+        })
+        .collect();
+    Some(ListUsersResponse { users })
+}
 
 pub async fn find_user(db: &PgPool, req: FindUserRequest) -> Option<FindUserResponse> {
     let query = r#"

@@ -6,8 +6,8 @@
 
 use super::user_service;
 use super::User;
-use actix_web::post;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
+use actix_web::{get, post};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -18,6 +18,21 @@ pub fn configure(cfg: &mut ServiceConfig) {
 fn routes(cfg: &mut ServiceConfig) {
     cfg.service(find_user);
     cfg.service(create_user);
+    cfg.service(list_users);
+}
+
+#[derive(Debug, Deserialize)]
+pub struct ListUsersRequest;
+
+#[derive(Debug, Serialize)]
+pub struct ListUsersResponse {
+    pub users: Vec<User>,
+}
+
+#[get("/")]
+async fn list_users(db: Data<PgPool>) -> Option<Json<ListUsersResponse>> {
+    let res = user_service::list_users(db.get_ref()).await?;
+    Some(Json(res))
 }
 
 #[derive(Debug, Deserialize)]
