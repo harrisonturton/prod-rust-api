@@ -36,8 +36,10 @@ async fn list_users(db: Data<PgPool>) -> Option<Json<ListUsersResponse>> {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct FindUserRequest {
-    pub id: String,
+#[serde(untagged)]
+pub enum FindUserRequest {
+    ById { by_id: String },
+    ByEmail { by_email: String },
 }
 
 #[derive(Debug, Serialize)]

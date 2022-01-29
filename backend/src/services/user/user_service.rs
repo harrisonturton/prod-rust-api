@@ -21,19 +21,41 @@ pub async fn list_users(db: &PgPool) -> Option<ListUsersResponse> {
 }
 
 pub async fn find_user(db: &PgPool, req: FindUserRequest) -> Option<FindUserResponse> {
+    let user = match req {
+        FindUserRequest::ById { by_id } => find_user_by_id(db, by_id).await?,
+        FindUserRequest::ByEmail { by_email } => find_user_by_email(db, by_email).await?,
+    };
+    Some(FindUserResponse { user })
+}
+
+async fn find_user_by_id(db: &PgPool, id: String) -> Option<User> {
     let query = r#"
         SELECT id, email FROM users WHERE id = $1
     "#;
     let user: (String, String) = sqlx::query_as(query)
-        .bind(req.id)
+        .bind(id)
         .fetch_one(db)
         .await
         .ok()?;
-    let user = User {
+    Some(User {
         id: user.0,
         email: user.1,
-    };
-    Some(FindUserResponse { user })
+    })
+}
+
+async fn find_user_by_email(db: &PgPool, email: String) -> Option<User> {
+    let query = r#"
+        SELECT id, email FROM users WHERE email = $1
+    "#;
+    let user: (String, String) = sqlx::query_as(query)
+        .bind(email)
+        .fetch_one(db)
+        .await
+        .ok()?;
+    Some(User {
+        id: user.0,
+        email: user.1,
+    })
 }
 
 pub async fn create_user(db: &PgPool, req: CreateUserRequest) -> Option<CreateUserResponse> {
