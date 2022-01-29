@@ -4,7 +4,9 @@ use sqlx::{Connection, PgConnection};
 
 #[tokio::test]
 async fn get_user_returns_ok() {
-    let addr = start_test_server().expect("Failed to start test server");
+    let addr = start_test_server()
+        .await
+        .expect("Failed to start test server");
     let client = reqwest::Client::new();
     let response = client
         .get(format!("{}/user/", addr))

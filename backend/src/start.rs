@@ -13,7 +13,7 @@ pub fn start(listener: TcpListener, db_pool: PgPool) -> Result<Server, io::Error
             // `PgPool` is threadsafe and cheap to clone.
             .app_data(db_pool.clone())
             .configure(services::health::configure(db_pool.clone()))
-            .configure(services::user::configure)
+            .configure(services::user::configure(db_pool.clone()))
             .configure(services::auth::configure(db_pool.clone()))
     })
     .listen(listener)?

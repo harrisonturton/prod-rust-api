@@ -1,23 +1,18 @@
 use super::auth_api::{SignInRequest, SignInResponse};
 use super::auth_api::{SignOutRequest, SignOutResponse};
 use crate::services::user::FindUserRequest;
-use crate::services::user::UserServiceApi;
-use async_trait::async_trait;
-
-// Implement as a trait so that it can be mocked when testing other services.
-#[async_trait]
-pub trait AuthServiceApi {
-    async fn sign_in(&self, req: SignInRequest) -> Option<SignInResponse>;
-    async fn sign_out(&self, req: SignOutRequest) -> Option<SignOutResponse>;
-}
+use crate::services::user::UserService;
 
 pub struct AuthService {
-    pub user_service: Box<dyn UserServiceApi + Send + Sync>,
+    pub user_service: UserService,
 }
 
-#[async_trait]
-impl AuthServiceApi for AuthService {
-    async fn sign_in(&self, req: SignInRequest) -> Option<SignInResponse> {
+impl AuthService {
+    pub fn new(user_service: UserService) -> AuthService {
+        AuthService { user_service }
+    }
+
+    pub async fn sign_in(&self, req: SignInRequest) -> Option<SignInResponse> {
         let find_user_req = FindUserRequest::ByEmail {
             by_email: req.email,
         };
@@ -27,7 +22,7 @@ impl AuthServiceApi for AuthService {
         })
     }
 
-    async fn sign_out(&self, _req: SignOutRequest) -> Option<SignOutResponse> {
+    pub async fn sign_out(&self, _req: SignOutRequest) -> Option<SignOutResponse> {
         Some(SignOutResponse)
     }
 }

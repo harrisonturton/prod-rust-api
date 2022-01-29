@@ -1,4 +1,4 @@
-use super::auth_service::{AuthService, AuthServiceApi};
+use super::auth_service::AuthService;
 use crate::services::user::UserService;
 use actix_web::post;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
@@ -7,11 +7,8 @@ use sqlx::PgPool;
 
 pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
     move |cfg| {
-        // Could add an "install.tsx" equivalent to user_service. Maybe analagous to Spring module?
-        let user_service = UserService { db: pool.clone() };
-        let auth_service = AuthService {
-            user_service: Box::new(user_service),
-        };
+        let user_service = UserService::new(pool.clone());
+        let auth_service = AuthService::new(user_service);
         cfg.service(
             scope("/auth")
                 .app_data(Data::new(auth_service))

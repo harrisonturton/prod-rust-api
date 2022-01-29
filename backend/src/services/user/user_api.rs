@@ -4,15 +4,22 @@
 //! change actix for something else, that should be possible simply by replacing
 //! this file.
 
-use super::user_service;
+use super::user_service::UserService;
 use super::User;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
 use actix_web::{get, post};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
-pub fn configure(cfg: &mut ServiceConfig) {
-    cfg.service(scope("/user").configure(routes));
+pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
+    move |cfg| {
+        let user_service = UserService::new(pool.clone());
+        cfg.service(
+            scope("/user")
+                .app_data(Data::new(user_service))
+                .configure(routes),
+        );
+    }
 }
 
 fn routes(cfg: &mut ServiceConfig) {
@@ -21,17 +28,14 @@ fn routes(cfg: &mut ServiceConfig) {
     cfg.service(create_user);
 }
 
-#[derive(Debug, Deserialize)]
-pub struct ListUsersRequest;
-
 #[derive(Debug, Serialize)]
 pub struct ListUsersResponse {
     pub users: Vec<User>,
 }
 
 #[get("/")]
-async fn list_users(db: Data<PgPool>) -> Option<Json<ListUsersResponse>> {
-    let res = user_service::list_users(db.get_ref()).await?;
+async fn list_users(service: Data<UserService>) -> Option<Json<ListUsersResponse>> {
+    let res = service.into_inner().list_users().await?;
     Some(Json(res))
 }
 
@@ -48,8 +52,11 @@ pub struct FindUserResponse {
 }
 
 #[post("/")]
-async fn find_user(req: Json<FindUserRequest>, db: Data<PgPool>) -> Option<Json<FindUserResponse>> {
-    let res = user_service::find_user(db.get_ref(), req.into_inner()).await?;
+async fn find_user(
+    service: Data<UserService>,
+    req: Json<FindUserRequest>,
+) -> Option<Json<FindUserResponse>> {
+    let res = service.find_user(req.into_inner()).await?;
     Some(Json(res))
 }
 
@@ -66,9 +73,9 @@ pub struct CreateUserResponse {
 
 #[post("/new")]
 async fn create_user(
+    service: Data<UserService>,
     req: Json<CreateUserRequest>,
-    db: Data<PgPool>,
 ) -> Option<Json<CreateUserResponse>> {
-    let res = user_service::create_user(db.get_ref(), req.into_inner()).await?;
+    let res = service.create_user(req.into_inner()).await?;
     Some(Json(res))
 }
