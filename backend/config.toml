@@ -5,6 +5,6 @@ port = 8000
 [database]
 host = "127.0.0.1"
 port = 5432
-username = "postgres"
+username = "harrisonturton"
 password = "postgres"
 database = "editor"

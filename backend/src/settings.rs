@@ -1,5 +1,7 @@
+use config::{Config, ConfigError, File};
 use serde::Deserialize;
-use config::{Config, File, ConfigError};
+
+pub static CONFIG_FILE: &str = "config";
 
 #[derive(Deserialize)]
 pub struct Settings {
@@ -24,6 +26,13 @@ pub struct DatabaseSettings {
 
 pub fn get_config() -> Result<Settings, ConfigError> {
     let mut settings = Config::default();
-    settings.merge(File::with_name("config"))?;
+    settings.merge(File::with_name(CONFIG_FILE))?;
     settings.try_into()
+}
+
+pub fn get_database_connection_string(db: &DatabaseSettings) -> String {
+    format!(
+        "postgres://{}:{}@{}:{}/{}",
+        db.username, db.password, db.host, db.port, db.database
+    )
 }

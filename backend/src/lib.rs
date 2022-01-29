@@ -1,19 +1,22 @@
+pub mod services;
 pub mod settings;
-pub mod auth;
-pub mod health;
-pub mod user;
 
 use actix_web::dev::Server;
-use actix_web::{App, HttpServer};
+use actix_web::middleware::Logger;
+use actix_web::{web::Data, App, HttpServer};
+use sqlx::PgPool;
 use std::io;
 use std::net::TcpListener;
 
-pub fn start(listener: TcpListener) -> Result<Server, io::Error> {
-    let server = HttpServer::new(|| {
+pub fn start(listener: TcpListener, db_pool: PgPool) -> Result<Server, io::Error> {
+    let pool = Data::new(db_pool);
+    let server = HttpServer::new(move || {
         App::new()
-            .configure(health::configure)
-            .configure(user::configure)
-            .configure(auth::configure)
+            .wrap(Logger::default())
+            .configure(services::health::configure)
+            .configure(services::user::configure)
+            .configure(services::auth::configure)
+            .app_data(pool.clone())
     })
     .listen(listener)?
     .run();
