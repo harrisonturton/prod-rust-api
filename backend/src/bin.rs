@@ -15,5 +15,5 @@ async fn main() -> io::Result<()> {
     let addr = format!("{}:{}", config.server.host, config.server.port);
     log::info!("Serving on {}", addr);
     let listener = TcpListener::bind(addr)?;
-    backend::start(listener, conn_pool)?.await
+    backend::start::start(listener, conn_pool)?.await
 }
