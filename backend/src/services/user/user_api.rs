@@ -16,9 +16,9 @@ pub fn configure(cfg: &mut ServiceConfig) {
 }
 
 fn routes(cfg: &mut ServiceConfig) {
+    cfg.service(list_users);
     cfg.service(find_user);
     cfg.service(create_user);
-    cfg.service(list_users);
 }
 
 #[derive(Debug, Deserialize)]

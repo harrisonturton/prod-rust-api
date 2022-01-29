@@ -1,11 +1,20 @@
-use super::auth_service;
-use actix_web::web::{scope, Data, Json, ServiceConfig};
+use super::auth_service::{AuthServiceApi, AuthService};
 use actix_web::post;
-use serde::{Serialize, Deserialize};
+use actix_web::web::{scope, Data, Json, ServiceConfig};
+use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
-pub fn configure(cfg: &mut ServiceConfig) {
-    cfg.service(scope("/auth").configure(routes));
+pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
+    move |cfg: &mut ServiceConfig| {
+        // Could add an "install.tsx" equivalent to user_service. Maybe analagous to Spring module?
+        let user_service = crate::services::user::UserService {
+            db: pool.clone()
+        };
+        let auth_service = AuthService {
+            user_service: Box::new(user_service)
+        };
+        cfg.service(scope("/auth").app_data(Data::new(auth_service)).configure(routes));
+    }
 }
 
 fn routes(cfg: &mut ServiceConfig) {
@@ -27,8 +36,8 @@ pub struct SignInResponse {
 }
 
 #[post("/sign_in")]
-async fn sign_in(db: Data<PgPool>, req: Json<SignInRequest>) -> Option<Json<SignInResponse>> {
-    let res = auth_service::sign_in(db.get_ref(), req.into_inner()).await?;
+async fn sign_in(service: Data<AuthService>, req: Json<SignInRequest>) -> Option<Json<SignInResponse>> {
+    let res = service.into_inner().sign_in(req.into_inner()).await?;
     Some(Json(res))
 }
 
@@ -42,7 +51,7 @@ pub struct SignOutRequest {
 pub struct SignOutResponse;
 
 #[post("/sign_out")]
-async fn sign_out(db: Data<PgPool>, req: Json<SignOutRequest>) -> Option<Json<SignOutResponse>> {
-    let res = auth_service::sign_out(db.get_ref(), req.into_inner()).await?;
+async fn sign_out(service: Data<AuthService>, req: Json<SignOutRequest>) -> Option<Json<SignOutResponse>> {
+    let res = service.into_inner().sign_out(req.into_inner()).await?;
     Some(Json(res))
 }
