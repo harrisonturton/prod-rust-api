@@ -3,9 +3,8 @@ use super::user_api::{CreateUserRequest, CreateUserResponse};
 use super::user_api::{FindUserRequest, FindUserResponse};
 use super::user_id_generator::generate_id;
 use super::user_model::User;
-use sqlx::PgPool;
 use async_trait::async_trait;
-use std::sync::Arc;
+use sqlx::PgPool;
 
 #[async_trait]
 pub trait UserServiceApi {
@@ -13,7 +12,7 @@ pub trait UserServiceApi {
 }
 
 pub struct UserService {
-    pub db: PgPool
+    pub db: PgPool,
 }
 
 #[async_trait]
