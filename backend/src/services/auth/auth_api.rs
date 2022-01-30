@@ -1,5 +1,6 @@
 use super::auth_service::AuthService;
 use crate::services::user::UserService;
+use crate::util::error::StatusCode;
 use actix_web::post;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
 use serde::{Deserialize, Serialize};
@@ -39,9 +40,9 @@ pub struct SignInResponse {
 async fn sign_in(
     service: Data<AuthService>,
     req: Json<SignInRequest>,
-) -> Option<Json<SignInResponse>> {
-    let res = service.into_inner().sign_in(req.into_inner()).await?;
-    Some(Json(res))
+) -> Result<Json<SignInResponse>, StatusCode> {
+    let res = service.into_inner().sign_in(req.into_inner()).await;
+    res.map(Json).ok_or(StatusCode::UNAUTHORIZED)
 }
 
 // Don't derive `Debug` to make it harder to log passwords.

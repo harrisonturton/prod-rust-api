@@ -1,9 +1,10 @@
 use super::user_api::ListUsersResponse;
 use super::user_api::{CreateUserRequest, CreateUserResponse};
 use super::user_api::{FindUserRequest, FindUserResponse};
-use super::user_id_generator::generate_id;
 use super::user_model::User;
 use super::user_repo;
+use crate::util::hash::Hash;
+use crate::util::id_generator::generate_id;
 use sqlx::PgPool;
 
 pub struct UserService {
@@ -34,23 +35,11 @@ impl UserService {
     }
 
     pub async fn create_user(&self, req: CreateUserRequest) -> Option<CreateUserResponse> {
-        let query = r#"
-            INSERT INTO users (id, email, hash) VALUES ($1, $2, $3) RETURNING id, email
-        "#;
-        let email = req.email;
-        let id = generate_id();
-        let hash = String::from("password-hash"); // TODO(harry): implement hashing
-        let row: (String, String) = sqlx::query_as(query)
-            .bind(id)
-            .bind(email)
-            .bind(hash)
-            .fetch_one(&self.db)
-            .await
-            .ok()?;
-        let user = User {
-            id: row.0,
-            email: row.1,
-        };
+        let CreateUserRequest { email, password } = req;
+        let id = generate_id('U');
+        let hash = Hash::hash(&password)?.serialize();
+        let user = User { id, email, hash };
+        user_repo::create_user(&self.db, &user).await.ok()?;
         Some(CreateUserResponse { user })
     }
 }
