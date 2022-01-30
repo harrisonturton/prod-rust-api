@@ -6,14 +6,14 @@
 
 use super::user_service::UserService;
 use super::User;
+use crate::services::auth::AuthService;
+use crate::settings::AuthSettings;
 use crate::util::http::Result;
+use crate::util::middleware::CheckLogin;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
 use actix_web::{get, post};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
-use crate::util::middleware::CheckLogin;
-use crate::services::auth::AuthService;
-use crate::settings::AuthSettings;
 
 pub fn configure(pool: PgPool, settings: AuthSettings) -> impl Fn(&mut ServiceConfig) {
     move |cfg| {

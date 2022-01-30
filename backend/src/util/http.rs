@@ -38,6 +38,14 @@ impl ServiceError {
         }
     }
 
+    pub fn bad_request() -> Self {
+        let status = StatusCode::BAD_REQUEST;
+        Self {
+            status: status.as_u16(),
+            message: status.canonical_reason().map(|msg| msg.to_owned()),
+        }
+    }
+
     pub fn with_message(mut self, message: &str) -> Self {
         self.message = Some(message.to_owned());
         self

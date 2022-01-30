@@ -64,7 +64,10 @@ impl AuthService {
     ) -> Result<ValidateTokenResponse> {
         let session = auth_repo::find_session_by_token(&self.db, &req.token).await?;
         let session_duration = time::now().signed_duration_since(session.created_at);
-        log::info!("signed duration since token was created: {}", session_duration);
+        log::info!(
+            "signed duration since token was created: {}",
+            session_duration
+        );
         let max_session_duration = self.settings.sat_cookie_lifetime_mins;
         let is_valid = session_duration <= chrono::Duration::minutes(max_session_duration.into());
         Ok(ValidateTokenResponse { is_valid })

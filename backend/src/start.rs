@@ -1,11 +1,13 @@
-use futures::FutureExt;
-use actix_web::dev::Service;
 use crate::services;
 use crate::settings::Settings;
 use actix_session::CookieSession;
 use actix_web::dev::Server;
+use actix_web::dev::Service;
+use actix_web::middleware::ErrorHandlerResponse;
+use actix_web::middleware::ErrorHandlers;
 use actix_web::middleware::Logger;
 use actix_web::{App, HttpServer};
+use futures::FutureExt;
 use sqlx::PgPool;
 use std::io;
 use std::net::TcpListener;
@@ -27,7 +29,10 @@ pub fn start(
             .wrap(Logger::default())
             // `PgPool` is threadsafe and cheap to clone.
             .app_data(db_pool.clone())
-            .configure(services::user::configure(db_pool.clone(), settings.auth.clone()))
+            .configure(services::user::configure(
+                db_pool.clone(),
+                settings.auth.clone(),
+            ))
             .wrap_fn(|req, srv| {
                 srv.call(req).map(|res| {
                     log::info!("3");
@@ -58,8 +63,24 @@ pub fn start(
                     res
                 })
             })
+            .wrap(ErrorHandlers::new().handler(
+                actix_web::http::StatusCode::BAD_REQUEST,
+                json_deserialize_to_server_error,
+            ))
     })
     .listen(listener)?
     .run();
     Ok(server)
+}
+
+fn json_deserialize_to_server_error<B>(
+    res: actix_web::dev::ServiceResponse<B>,
+) -> actix_web::Result<ErrorHandlerResponse<B>> {
+    let (req, _) = res.into_parts();
+    let res = actix_web::dev::ServiceResponse::from_err(
+        crate::util::http::ServiceError::bad_request(),
+        req,
+    )
+    .map_into_right_body();
+    Ok(ErrorHandlerResponse::Response(res))
 }
