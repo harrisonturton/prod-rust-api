@@ -8,6 +8,7 @@ use crate::util::http::{Result, ServiceError};
 use crate::util::id_generator::generate_id;
 use sqlx::PgPool;
 
+#[derive(Clone)]
 pub struct UserService {
     pub db: PgPool,
 }

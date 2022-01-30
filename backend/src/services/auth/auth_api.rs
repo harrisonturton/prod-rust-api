@@ -46,8 +46,9 @@ pub struct SignInResponse {
 async fn sign_in(service: Data<AuthService>, req: Json<SignInRequest>) -> Result<HttpResponse> {
     let res = service.into_inner().sign_in(req.into_inner()).await?;
     let mut cookie = Cookie::new(SESSION_ID_COOKIE_NAME, &res.token);
-    cookie.set_http_only(true);
-    cookie.set_secure(true);
+    cookie.set_path("/");
+    cookie.set_http_only(false);
+    cookie.set_secure(false);
     let http_res = HttpResponse::Ok().cookie(cookie).json(res);
     Ok(http_res)
 }

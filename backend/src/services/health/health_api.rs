@@ -13,7 +13,7 @@ pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
 fn attach_routes(cfg: &mut ServiceConfig) {
     cfg.service(ping_healthcheck);
     cfg.service(database_healthcheck);
-    cfg.service(session_healthcheck);
+    // cfg.service(session_healthcheck);
 }
 
 // This endpoint returns a 200 OK always, used to check if the server is alive.
@@ -35,14 +35,14 @@ async fn database_healthcheck(db: Data<PgPool>) -> impl Responder {
     }
 }
 
-#[get("/session")]
-async fn session_healthcheck(session: Session) -> Option<impl Responder> {
-    let count = if let Some(count) = session.get::<i32>("counter").ok()? {
-        session.insert("counter", count + 1).ok()?;
-        count + 1
-    } else {
-        session.insert("counter", 1).ok()?;
-        1
-    };
-    Some(format!("counter: {}", count))
-}
+// #[get("/session")]
+// async fn session_healthcheck(session: Session) -> Option<impl Responder> {
+//     let count = if let Some(count) = session.get::<i32>("counter").ok()? {
+//         session.insert("counter", count + 1).ok()?;
+//         count + 1
+//     } else {
+//         session.insert("counter", 1).ok()?;
+//         1
+//     };
+//     Some(format!("counter: {}", count))
+// }

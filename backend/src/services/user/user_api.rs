@@ -11,12 +11,18 @@ use actix_web::web::{scope, Data, Json, ServiceConfig};
 use actix_web::{get, post};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
+use crate::util::middleware::CheckLogin;
+use crate::services::auth::AuthService;
+use crate::settings::AuthSettings;
 
-pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
+pub fn configure(pool: PgPool, settings: AuthSettings) -> impl Fn(&mut ServiceConfig) {
     move |cfg| {
         let user_service = UserService::new(pool.clone());
+        let auth_service = AuthService::new(settings.clone(), pool.clone(), user_service.clone());
+        let check_login_midddleware = CheckLogin { auth_service };
         cfg.service(
             scope("/user")
+                .wrap(check_login_midddleware)
                 .app_data(Data::new(user_service))
                 .configure(routes),
         );
