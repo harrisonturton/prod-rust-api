@@ -5,18 +5,25 @@ use super::auth_model::Session;
 use super::auth_repo;
 use crate::services::user::FindUserRequest;
 use crate::services::user::UserService;
+use crate::settings::AuthSettings;
 use crate::util::hash::{generate_token, Hash};
 use crate::util::http::{Result, ServiceError};
+use crate::util::time;
 use sqlx::PgPool;
 
 pub struct AuthService {
+    pub settings: AuthSettings,
     pub db: PgPool,
     pub user_service: UserService,
 }
 
 impl AuthService {
-    pub fn new(db: PgPool, user_service: UserService) -> AuthService {
-        AuthService { db, user_service }
+    pub fn new(settings: AuthSettings, db: PgPool, user_service: UserService) -> AuthService {
+        AuthService {
+            settings,
+            db,
+            user_service,
+        }
     }
 
     pub async fn sign_in(&self, req: SignInRequest) -> Result<SignInResponse> {
@@ -38,6 +45,7 @@ impl AuthService {
         let session = Session {
             user_id: user.id,
             token: token.clone(),
+            created_at: time::now(),
         };
         auth_repo::create_session(&self.db, &session)
             .await
@@ -53,9 +61,10 @@ impl AuthService {
         &self,
         req: ValidateTokenRequest,
     ) -> Result<ValidateTokenResponse> {
-        let is_valid = auth_repo::find_session_by_token(&self.db, &req.token)
-            .await
-            .is_ok();
+        let session = auth_repo::find_session_by_token(&self.db, &req.token).await?;
+        let session_duration = time::now().signed_duration_since(session.created_at);
+        let max_session_duration = self.settings.sat_cookie_lifetime_mins;
+        let is_valid = session_duration <= chrono::Duration::minutes(max_session_duration.into());
         Ok(ValidateTokenResponse { is_valid })
     }
 }

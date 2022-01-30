@@ -1,3 +1,4 @@
+use actix_web::error::Error as ActixError;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, ResponseError};
 use serde::Serialize;
@@ -66,6 +67,12 @@ impl ResponseError for ServiceError {
     fn error_response(&self) -> HttpResponse {
         let status = self.status_code();
         HttpResponse::build(status).json(self)
+    }
+}
+
+impl From<ActixError> for ServiceError {
+    fn from(_: ActixError) -> ServiceError {
+        ServiceError::server_error()
     }
 }
 

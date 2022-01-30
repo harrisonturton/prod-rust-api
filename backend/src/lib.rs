@@ -1,4 +1,4 @@
-#![warn(clippy::all/*, clippy::pedantic*/)]
+#![warn(clippy::all)]
 pub mod services;
 pub mod settings;
 pub mod start;

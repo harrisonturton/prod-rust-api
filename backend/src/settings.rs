@@ -3,25 +3,31 @@ use serde::Deserialize;
 
 pub static CONFIG_FILE: &str = "config";
 
-#[derive(Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct Settings {
     pub server: ServerSettings,
     pub database: DatabaseSettings,
+    pub auth: AuthSettings,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct ServerSettings {
     pub host: String,
     pub port: u16,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct DatabaseSettings {
     pub username: String,
     pub password: String,
     pub host: String,
     pub port: u16,
     pub database: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct AuthSettings {
+    pub sat_cookie_lifetime_mins: u32,
 }
 
 pub fn get_config() -> Result<Settings, ConfigError> {

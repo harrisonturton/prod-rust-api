@@ -8,3 +8,6 @@ port = 5432
 username = "harrisonturton"
 password = "postgres"
 database = "editor"
+
+[auth]
+sat_cookie_lifetime_mins = 1# 720 # 12 hours in minutes
