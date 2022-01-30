@@ -1,6 +1,6 @@
 use super::auth_service::AuthService;
 use crate::services::user::UserService;
-use crate::util::error::StatusCode;
+use crate::util::http::Result;
 use actix_web::post;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
 use serde::{Deserialize, Serialize};
@@ -9,7 +9,7 @@ use sqlx::PgPool;
 pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
     move |cfg| {
         let user_service = UserService::new(pool.clone());
-        let auth_service = AuthService::new(user_service);
+        let auth_service = AuthService::new(pool.clone(), user_service);
         cfg.service(
             scope("/auth")
                 .app_data(Data::new(auth_service))
@@ -21,6 +21,7 @@ pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
 fn routes(cfg: &mut ServiceConfig) {
     cfg.service(sign_in);
     cfg.service(sign_out);
+    cfg.service(validate_session);
 }
 
 // Don't derive `Debug` to make it harder to log passwords.
@@ -40,9 +41,12 @@ pub struct SignInResponse {
 async fn sign_in(
     service: Data<AuthService>,
     req: Json<SignInRequest>,
-) -> Result<Json<SignInResponse>, StatusCode> {
-    let res = service.into_inner().sign_in(req.into_inner()).await;
-    res.map(Json).ok_or(StatusCode::UNAUTHORIZED)
+) -> Result<Json<SignInResponse>> {
+    service
+        .into_inner()
+        .sign_in(req.into_inner())
+        .await
+        .map(Json)
 }
 
 // Don't derive `Debug` to make it harder to log passwords.
@@ -61,4 +65,27 @@ async fn sign_out(
 ) -> Option<Json<SignOutResponse>> {
     let res = service.into_inner().sign_out(req.into_inner()).await?;
     Some(Json(res))
+}
+
+// Don't derive `Debug` to make it harder to log SAT tokens.
+#[derive(Deserialize)]
+pub struct ValidateTokenRequest {
+    pub token: String,
+}
+
+#[derive(Serialize)]
+pub struct ValidateTokenResponse {
+    pub is_valid: bool,
+}
+
+#[post("/sat")]
+async fn validate_session(
+    service: Data<AuthService>,
+    req: Json<ValidateTokenRequest>,
+) -> Result<Json<ValidateTokenResponse>> {
+    service
+        .into_inner()
+        .validate_session(req.into_inner())
+        .await
+        .map(Json)
 }

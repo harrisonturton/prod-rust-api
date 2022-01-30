@@ -6,7 +6,7 @@
 
 use super::user_service::UserService;
 use super::User;
-use crate::util::error::StatusCode;
+use crate::util::http::Result;
 use actix_web::web::{scope, Data, Json, ServiceConfig};
 use actix_web::{get, post};
 use serde::{Deserialize, Serialize};
@@ -35,13 +35,8 @@ pub struct ListUsersResponse {
 }
 
 #[get("/")]
-async fn list_users(service: Data<UserService>) -> Result<Json<ListUsersResponse>, StatusCode> {
-    let res = service
-        .into_inner()
-        .list_users()
-        .await
-        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(Json(res))
+async fn list_users(service: Data<UserService>) -> Result<Json<ListUsersResponse>> {
+    service.into_inner().list_users().await.map(Json)
 }
 
 #[derive(Debug, Deserialize)]
@@ -60,12 +55,8 @@ pub struct FindUserResponse {
 async fn find_user(
     service: Data<UserService>,
     req: Json<FindUserRequest>,
-) -> Result<Json<FindUserResponse>, StatusCode> {
-    let res = service
-        .find_user(req.into_inner())
-        .await
-        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(Json(res))
+) -> Result<Json<FindUserResponse>> {
+    service.find_user(req.into_inner()).await.map(Json)
 }
 
 #[derive(Debug, Deserialize)]
@@ -83,10 +74,6 @@ pub struct CreateUserResponse {
 async fn create_user(
     service: Data<UserService>,
     req: Json<CreateUserRequest>,
-) -> Result<Json<CreateUserResponse>, StatusCode> {
-    let res = service
-        .create_user(req.into_inner())
-        .await
-        .ok_or(StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(Json(res))
+) -> Result<Json<CreateUserResponse>> {
+    service.create_user(req.into_inner()).await.map(Json)
 }

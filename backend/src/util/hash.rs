@@ -61,7 +61,7 @@ impl Hash {
 }
 
 pub fn generate_token() -> Option<String> {
-    let mut token = [0u8; 256];
+    let mut token = [0u8; 192]; // ciel(3n/4) bytes for n character base64 string
     SystemRandom::new().fill(&mut token).ok()?;
     Some(base64::encode(token))
 }
