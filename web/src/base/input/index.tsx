@@ -8,10 +8,11 @@ export interface TextFieldProps {
     placeholder?: string,
     value: string,
     tabIndex?: number,
+    autoFocus?: boolean,
     onChange: (value: string) => void,
 };
 
-export const TextField = ({ className, type="text", placeholder, tabIndex, value, onChange }: TextFieldProps) => {
+export const TextField = ({ className, type="text", placeholder, tabIndex, value, autoFocus, onChange }: TextFieldProps) => {
     const handleInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.value);
         e.preventDefault();
@@ -24,6 +25,7 @@ export const TextField = ({ className, type="text", placeholder, tabIndex, value
             type={type}
             value={value}
             placeholder={placeholder}
+            autoFocus={autoFocus}
             onChange={handleInputChanged}
         />    
     );
@@ -35,10 +37,11 @@ export interface ButtonProps {
     disabled?: boolean,
     label: string,
     tabIndex?: number,
+    autoFocus?: boolean,
     onClick?: () => void,
 }
 
-export const Button = ({ className, label, loading=false, disabled=false, tabIndex, onClick }: ButtonProps) => {
+export const Button = ({ className, label, loading=false, disabled=false, autoFocus, tabIndex, onClick }: ButtonProps) => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.();
     }
@@ -47,6 +50,7 @@ export const Button = ({ className, label, loading=false, disabled=false, tabInd
             tabIndex={tabIndex}
             role="button"
             type="button"
+            autoFocus={autoFocus}
             className={classNames(styles.button, className)}
             disabled={disabled || loading}
             onClick={handleClick}

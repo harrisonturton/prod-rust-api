@@ -25,6 +25,7 @@ const Login = () => {
                 placeholder="Email"
                 value={username}
                 onChange={setEmail}
+                autoFocus={true}
             />
             <TextField
                 className={styles.inputField}
