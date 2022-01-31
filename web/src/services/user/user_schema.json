@@ -1,0 +1,49 @@
+{
+    "$id": "user",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "GetUserRequest": {
+            "properties": {
+                "by_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "by_id"
+            ],
+            "type": "object"
+        },
+        "GetUserResponse": {
+            "properties": {
+                "user": {
+                    "$ref": "user#/definitions/User"
+                }
+            },
+            "required": [
+                "user"
+            ],
+            "type": "object"
+        },
+        "User": {
+            "properties": {
+                "created_at": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "created_at",
+                "email",
+                "id"
+            ],
+            "type": "object"
+        }
+    }
+}
+

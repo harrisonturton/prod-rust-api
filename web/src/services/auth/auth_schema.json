@@ -1,0 +1,47 @@
+{
+    "$id": "auth",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "SignInRequest": {
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "email",
+                "password"
+            ],
+            "type": "object"
+        },
+        "SignInResponse": {
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "token"
+            ],
+            "type": "object"
+        },
+        "SignOutRequest": {
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "token"
+            ],
+            "type": "object"
+        },
+        "SignOutResponse": {
+            "type": "object"
+        }
+    }
+}
+
