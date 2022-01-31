@@ -1,0 +1,53 @@
+@use "sass:color";
+@import "base/styles/colors";
+@import "base/styles/grid";
+@import "base/styles/font";
+
+.textField {
+    background-color: $gray-800;
+    border: 1px solid $gray-700;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    padding: $space-xxs;
+
+    &:focus {
+        border-color: $violet-500;
+        background-color: fade-out($violet-500, $amount: 0.9);
+        box-shadow: 0px 0px $space-xxs fade-out($violet-500, $amount: 0.7);
+    }
+
+    &:hover:not(:focus) {
+        background-color: $gray-700;
+        border-color: $gray-600;
+    }
+    
+    &::placeholder {
+        color: $gray-400;
+    }
+}
+
+.button {
+    background-color: $violet-800;
+    color: $violet-200;
+    padding: $space-xxs;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-sm;
+    border: 1px solid $violet-800;
+
+    &:hover:not(:active) {
+        cursor: pointer;
+        color: $white;
+        background-color: $violet-700;
+    }
+
+    &:focus {
+        color: $white;
+        background-color: $violet-700;
+        border-color: $violet-500;
+        box-shadow: 0px 0px $space-xxs fade-out($violet-500, $amount: 0.5);
+    }
+
+    &:active {
+        background-color: $violet-800;
+    }
+}
