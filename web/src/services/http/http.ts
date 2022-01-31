@@ -15,7 +15,7 @@ export class HttpClient implements HttpService {
 
     /**
      * Make a GET request. Does not validate the response.
-     * 
+     *
      * @param path path part to send the request to.
      * @returns JSON body of the response.
      */
@@ -28,7 +28,7 @@ export class HttpClient implements HttpService {
 
     /**
      * Make a POST request. Does not validate the request or response.
-     * 
+     *
      * @param path path part to send the request to.
      * @param body request body to serialize.
      * @returns JSON body of the response.

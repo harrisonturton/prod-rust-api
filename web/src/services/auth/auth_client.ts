@@ -1,6 +1,11 @@
 import schema from "./auth_schema.json";
 import { HttpService, ApiClient } from "services/http";
-import { SignInRequest, SignInResponse, SignOutRequest, SignOutResponse } from "services/auth/auth_schema";
+import {
+    SignInRequest,
+    SignInResponse,
+    SignOutRequest,
+    SignOutResponse,
+} from "services/auth/auth_schema";
 
 export interface AuthService {
     signIn(req: SignInRequest): Promise<SignInResponse>;

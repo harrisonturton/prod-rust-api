@@ -3,16 +3,24 @@ import React from "react";
 import styles from "./styles.module.scss";
 
 export interface TextFieldProps {
-    className?: string,
-    type?: "text" | "password",
-    placeholder?: string,
-    value: string,
-    tabIndex?: number,
-    autoFocus?: boolean,
-    onChange: (value: string) => void,
-};
+    className?: string;
+    type?: "text" | "password";
+    placeholder?: string;
+    value: string;
+    tabIndex?: number;
+    autoFocus?: boolean;
+    onChange: (value: string) => void;
+}
 
-export const TextField = ({ className, type="text", placeholder, tabIndex, value, autoFocus, onChange }: TextFieldProps) => {
+export const TextField = ({
+    className,
+    type = "text",
+    placeholder,
+    tabIndex,
+    value,
+    autoFocus,
+    onChange,
+}: TextFieldProps) => {
     const handleInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.value);
         e.preventDefault();
@@ -27,24 +35,32 @@ export const TextField = ({ className, type="text", placeholder, tabIndex, value
             placeholder={placeholder}
             autoFocus={autoFocus}
             onChange={handleInputChanged}
-        />    
+        />
     );
 };
 
 export interface ButtonProps {
-    className?: string,
-    loading?: boolean,
-    disabled?: boolean,
-    label: string,
-    tabIndex?: number,
-    autoFocus?: boolean,
-    onClick?: () => void,
+    className?: string;
+    loading?: boolean;
+    disabled?: boolean;
+    label: string;
+    tabIndex?: number;
+    autoFocus?: boolean;
+    onClick?: () => void;
 }
 
-export const Button = ({ className, label, loading=false, disabled=false, autoFocus, tabIndex, onClick }: ButtonProps) => {
+export const Button = ({
+    className,
+    label,
+    loading = false,
+    disabled = false,
+    autoFocus,
+    tabIndex,
+    onClick,
+}: ButtonProps) => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.();
-    }
+    };
     return (
         <button
             tabIndex={tabIndex}

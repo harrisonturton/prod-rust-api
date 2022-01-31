@@ -7,10 +7,10 @@ import { TextField, Button } from "base/input";
 import styles from "./styles.module.scss";
 
 const Login = () => {
-    let [ username, setEmail ] = useState<string>("");
-    let [ password, setPassword ] = useState<string>("");
-    let [ loading, setLoading ] = useState<boolean>(false);
-    let [ error, setError ] = useState<string[]>([]);
+    let [username, setEmail] = useState<string>("");
+    let [password, setPassword] = useState<string>("");
+    let [loading, setLoading] = useState<boolean>(false);
+    let [error, setError] = useState<string[]>([]);
 
     const onSubmit = () => {
         console.log("Submitted!");
@@ -34,10 +34,7 @@ const Login = () => {
                 value={password}
                 onChange={setPassword}
             />
-            <Button
-                label="Sign In"
-                onClick={onSubmit}
-            />
+            <Button label="Sign In" onClick={onSubmit} />
             {loading && <span>Loading</span>}
         </div>
     );
@@ -47,10 +44,10 @@ const Home: NextPage = () => (
     <div>
         <Head>
             <title>Home Page</title>
-            <meta name="description" content="Home page"/>
+            <meta name="description" content="Home page" />
         </Head>
         <main className={styles.content}>
-            <Login/>
+            <Login />
             <Link href={getEditorRoute()}>
                 <a className={styles.homeLabel}>Don't have an account?</a>
             </Link>

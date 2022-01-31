@@ -11,8 +11,8 @@ addFormats(ajv, ["date", "time", "date-time"]);
 
 // https://stackoverflow.com/questions/63905928/validate-using-a-specific-definition-with-ajv
 const body = {
-	email: "testing",
-	password: "bad",
+    email: "testing",
+    password: "bad",
 };
 
 var v = ajv.validate(authSchema.definitions.SignInResponse, body);
@@ -20,10 +20,10 @@ console.log("SignInResponse:", v);
 console.log("SignInResponse:", v.errors);
 
 const user = {
-	id: "user_id",
-	email: "email",
-	created_at: "1970-01-01T10:05:08",
-}
+    id: "user_id",
+    email: "email",
+    created_at: "1970-01-01T10:05:08",
+};
 
 var v = ajv.validate(userSchema.definitions.User, user);
 console.log("User:", v);

@@ -5,9 +5,7 @@ export interface FileTreeState {
     items: FileTreeItem[];
 }
 
-export type FileTreeItem
-    = FileItem
-    | DirectoryItem;
+export type FileTreeItem = FileItem | DirectoryItem;
 
 export interface FileItem {
     kind: "file";
@@ -26,11 +24,11 @@ export interface DirectoryItem {
 }
 
 export const useFileTreeState = (initialState: FileTreeState) => {
-    const [ state, setState ] = useState<FileTreeState>(initialState);
+    const [state, setState] = useState<FileTreeState>(initialState);
 
     const treeMap = (
         items: FileTreeItem[],
-        func: (item: FileTreeItem) => FileTreeItem,
+        func: (item: FileTreeItem) => FileTreeItem
     ) => {
         for (let i = 0; i < items.length; i++) {
             switch (items[i].kind) {
@@ -48,21 +46,21 @@ export const useFileTreeState = (initialState: FileTreeState) => {
                     break;
             }
         }
-    }
+    };
 
     const toggleNode = (id: string) => {
         let newState = deepClone(state);
-        treeMap(newState.items, item => {
+        treeMap(newState.items, (item) => {
             if (item.id == id && item.kind == "folder") {
                 return { ...item, collapsed: !item.collapsed };
             }
             return item;
-        })
+        });
         setState(newState);
     };
 
     const collapseAll = () => {
-        let newState = deepClone(state);        
+        let newState = deepClone(state);
         for (let item of newState.items) {
             switch (item.kind) {
                 case "file":

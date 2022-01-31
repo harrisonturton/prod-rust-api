@@ -41,7 +41,7 @@ const initialState: FileTreeState = {
                             label: "Notes.docx",
                             active: false,
                         },
-                    ]
+                    ],
                 },
                 {
                     kind: "folder",
@@ -74,26 +74,23 @@ const initialState: FileTreeState = {
                             label: "mappings.geojson",
                             active: false,
                         },
-                    ]
+                    ],
                 },
             ],
         },
-    ]
+    ],
 };
 
-export default function() {
+export default function () {
     const { state, collapseAll, toggleNode } = useFileTreeState(initialState);
     const onClick = (id: string) => toggleNode(id);
     const FileTree = () => (
-        <FileTreeImpl
-            items={state.items}
-            toggleNode={onClick}
-        />
+        <FileTreeImpl items={state.items} toggleNode={onClick} />
     );
 
     return {
         state,
         collapseAll,
-        FileTree
-    }
-};
+        FileTree,
+    };
+}

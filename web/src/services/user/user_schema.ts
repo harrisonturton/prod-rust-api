@@ -1,13 +1,13 @@
 export interface GetUserRequest {
-    readonly by_id: string
+    readonly by_id: string;
 }
 
 export interface GetUserResponse {
-    readonly user: User
+    readonly user: User;
 }
 
 export interface User {
-    readonly id: string,
-    readonly email: string,
-    readonly created_at: Date,
+    readonly id: string;
+    readonly email: string;
+    readonly created_at: Date;
 }

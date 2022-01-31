@@ -13,18 +13,18 @@ const Editor: NextPage = () => {
         <div>
             <Head>
                 <title>Editor Page</title>
-                <meta name="description" content="Editor page"/>
+                <meta name="description" content="Editor page" />
             </Head>
             <main className={styles.root}>
-                <Toolbar/>
+                <Toolbar />
                 <div className={styles.mainContent}>
-                    <TabNav/>
-                    <FileTree/>
+                    <TabNav />
+                    <FileTree />
                     <div className={styles.fileContainer}>
-                        <FileTabs/>
+                        <FileTabs />
                     </div>
                 </div>
-                <StatusBar/>
+                <StatusBar />
             </main>
         </div>
     );

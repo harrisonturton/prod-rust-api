@@ -3,9 +3,9 @@ import * as styles from "./styles.module.scss";
 
 const FileTabs = () => (
     <div className={styles.toolbar}>
-        <Tab label="README.md"/>
-        <Tab label="export.csv" active={true}/>
-        <Tab label="notebook.ipnyb"/>
+        <Tab label="README.md" />
+        <Tab label="export.csv" active={true} />
+        <Tab label="notebook.ipnyb" />
     </div>
 );
 
