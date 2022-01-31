@@ -1,5 +1,5 @@
-use crate::services::{auth, health, user};
 use crate::config::Config;
+use crate::services::{auth, health, user};
 use crate::util::http;
 use actix_web::dev::Server;
 use actix_web::http::StatusCode;
@@ -24,10 +24,10 @@ pub fn start(
         let user_service = user::UserService::new(db_pool.clone());
         let auth_service =
             auth::AuthService::new(config.auth.clone(), db_pool.clone(), user_service);
-        let auth_middleware = CheckLogin { auth_service };
+        let auth = CheckLogin { auth_service };
 
         // Service constructors
-        let user_service = user::configure(db_pool.clone(), auth_middleware.clone());
+        let user_service = user::configure(db_pool.clone(), auth.clone());
         let auth_service = auth::configure(db_pool.clone(), config.auth.clone());
         let health_service = health::configure(db_pool.clone());
 
@@ -42,7 +42,7 @@ pub fn start(
             .app_data(db_pool.clone())
             .service(scope("/auth").configure(auth_service))
             .service(scope("/health").configure(health_service))
-            .service(scope("/user").configure(user_service))
+            .service(scope("/user").wrap(auth).configure(user_service))
             .wrap(error_handlers)
     })
     .listen(listener)?

@@ -1,10 +1,10 @@
 use super::auth_service::AuthService;
-use crate::services::user::UserService;
 use crate::config::AuthConfig;
+use crate::services::user::UserService;
 use crate::util::http::Result;
 use actix_web::cookie::Cookie;
 use actix_web::post;
-use actix_web::web::{scope, Data, Json, ServiceConfig};
+use actix_web::web::{Data, Json, ServiceConfig};
 use actix_web::HttpResponse;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
@@ -15,18 +15,11 @@ pub fn configure(pool: PgPool, settings: AuthConfig) -> impl Fn(&mut ServiceConf
     move |cfg| {
         let user_service = UserService::new(pool.clone());
         let auth_service = AuthService::new(settings.clone(), pool.clone(), user_service);
-        cfg.service(
-            scope("/auth")
-                .app_data(Data::new(auth_service))
-                .configure(routes),
-        );
+        cfg.app_data(Data::new(auth_service));
+        cfg.service(sign_in);
+        cfg.service(sign_out);
+        cfg.service(validate_session);
     }
-}
-
-pub fn routes(cfg: &mut ServiceConfig) {
-    cfg.service(sign_in);
-    cfg.service(sign_out);
-    cfg.service(validate_session);
 }
 
 // Don't derive `Debug` to make it harder to log passwords.

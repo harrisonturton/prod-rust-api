@@ -1,17 +1,14 @@
-use actix_web::web::{scope, Data, HttpResponse, ServiceConfig};
+use actix_web::web::{Data, HttpResponse, ServiceConfig};
 use actix_web::{get, http::StatusCode, Responder};
 use sqlx::PgPool;
 
 pub fn configure(pool: PgPool) -> impl Fn(&mut ServiceConfig) {
     move |cfg| {
         let db = Data::new(pool.clone());
-        cfg.service(scope("/health").app_data(db).configure(routes));
+        cfg.app_data(db);
+        cfg.service(ping_healthcheck);
+        cfg.service(database_healthcheck);
     }
-}
-
-pub fn routes(cfg: &mut ServiceConfig) {
-    cfg.service(ping_healthcheck);
-    cfg.service(database_healthcheck);
 }
 
 // This endpoint returns a 200 OK always, used to check if the server is alive.
