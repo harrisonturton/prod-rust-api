@@ -5,7 +5,7 @@ use super::auth_model::Session;
 use super::auth_repo;
 use crate::services::user::FindUserRequest;
 use crate::services::user::UserService;
-use crate::settings::AuthSettings;
+use crate::config::AuthConfig;
 use crate::util::hash::{generate_token, Hash};
 use crate::util::http::{Result, ServiceError};
 use crate::util::time;
@@ -13,15 +13,15 @@ use sqlx::PgPool;
 
 #[derive(Clone)]
 pub struct AuthService {
-    pub settings: AuthSettings,
+    pub config: AuthConfig,
     pub db: PgPool,
     pub user_service: UserService,
 }
 
 impl AuthService {
-    pub fn new(settings: AuthSettings, db: PgPool, user_service: UserService) -> AuthService {
+    pub fn new(config: AuthConfig, db: PgPool, user_service: UserService) -> AuthService {
         AuthService {
-            settings,
+            config,
             db,
             user_service,
         }
@@ -68,7 +68,7 @@ impl AuthService {
             "signed duration since token was created: {}",
             session_duration
         );
-        let max_session_duration = self.settings.sat_cookie_lifetime_mins;
+        let max_session_duration = self.config.sat_cookie_lifetime_mins;
         let is_valid = session_duration <= chrono::Duration::minutes(max_session_duration.into());
         Ok(ValidateTokenResponse { is_valid })
     }

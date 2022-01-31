@@ -1,23 +1,22 @@
-use config::{Config, ConfigError, File};
 use serde::Deserialize;
 
-pub static CONFIG_FILE: &str = "config";
+pub static CONFIG_FILE: &str = "Config";
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Settings {
-    pub server: ServerSettings,
-    pub database: DatabaseSettings,
-    pub auth: AuthSettings,
+pub struct Config {
+    pub server: ServerConfig,
+    pub database: DatabaseConfig,
+    pub auth: AuthConfig,
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct ServerSettings {
+pub struct ServerConfig {
     pub host: String,
     pub port: u16,
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct DatabaseSettings {
+pub struct DatabaseConfig {
     pub username: String,
     pub password: String,
     pub host: String,
@@ -26,17 +25,17 @@ pub struct DatabaseSettings {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct AuthSettings {
+pub struct AuthConfig {
     pub sat_cookie_lifetime_mins: u32,
 }
 
-pub fn get_config() -> Result<Settings, ConfigError> {
-    let mut settings = Config::default();
-    settings.merge(File::with_name(CONFIG_FILE))?;
+pub fn get_config() -> Result<Config, config::ConfigError> {
+    let mut settings = config::Config::default();
+    settings.merge(config::File::with_name(CONFIG_FILE))?;
     settings.try_into()
 }
 
-pub fn get_database_connection_string(db: &DatabaseSettings) -> String {
+pub fn get_database_uri(db: &DatabaseConfig) -> String {
     format!(
         "postgres://{}:{}@{}:{}/{}",
         db.username, db.password, db.host, db.port, db.database

@@ -1,7 +1,5 @@
 use crate::services::auth::{AuthService, ValidateTokenRequest, ValidateTokenResponse};
 use crate::util::http::ServiceError;
-use chrono::TimeZone;
-use chrono::{DateTime, Utc};
 use std::future::{ready, Ready};
 
 use actix_web::body::EitherBody;
@@ -13,6 +11,7 @@ use std::rc::Rc;
 
 const SESSION_ID_COOKIE_NAME: &str = "app_session_id";
 
+#[derive(Clone)]
 pub struct CheckLogin {
     pub auth_service: AuthService,
 }
@@ -88,41 +87,4 @@ where
             }
         })
     }
-
-    // fn call(&self, req: ServiceRequest) -> Self::Future {
-    //     let svc = self.service.clone();
-    //     let (http_req, payload) = req.into_parts();
-    //     let is_logged_in = match http_req.cookie(SESSION_ID_COOKIE_NAME) {
-    //         Some(cookie) => {
-    //             // Make call to auth service here somehow
-    //             let token = cookie.value().to_owned();
-    //             let req = ValidateTokenRequest { token };
-    //             //let res = self.auth_service.validate_session(req).await;
-    //             true
-    //             // if let Some(date) = expires {
-    //             //     let expires = date.unix_timestamp();
-    //             //     let now = chrono::Utc::now().timestamp();
-    //             //     log::info!("expires: {}, now: {}, result: {}", expires, now, now <= expires);
-    //             //     now <= expires
-    //             // } else {
-    //             //     log::info!("no cookie expiry date?");
-    //             //     false
-    //             // }
-    //         },
-    //         None => {
-    //             log::info!("no cookie :(");
-    //             false
-    //         }
-    //     };
-    //     Box::pin(async move {
-    //         if is_logged_in {
-    //             let req = ServiceRequest::from_parts(http_req, payload);
-    //             svc.call(req).await.map(ServiceResponse::map_into_left_body)
-    //         } else {
-    //             let response = HttpResponse::from_error(ServiceError::unauthorized())
-    //                 .map_into_right_body();
-    //             Ok(ServiceResponse::new(http_req, response))
-    //         }
-    //     })
-    // }
 }

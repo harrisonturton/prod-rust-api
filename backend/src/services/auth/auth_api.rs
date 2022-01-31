@@ -1,6 +1,6 @@
 use super::auth_service::AuthService;
 use crate::services::user::UserService;
-use crate::settings::AuthSettings;
+use crate::config::AuthConfig;
 use crate::util::http::Result;
 use actix_web::cookie::Cookie;
 use actix_web::post;
@@ -11,7 +11,7 @@ use sqlx::PgPool;
 
 const SESSION_ID_COOKIE_NAME: &str = "app_session_id";
 
-pub fn configure(settings: AuthSettings, pool: PgPool) -> impl Fn(&mut ServiceConfig) {
+pub fn configure(pool: PgPool, settings: AuthConfig) -> impl Fn(&mut ServiceConfig) {
     move |cfg| {
         let user_service = UserService::new(pool.clone());
         let auth_service = AuthService::new(settings.clone(), pool.clone(), user_service);
@@ -23,7 +23,7 @@ pub fn configure(settings: AuthSettings, pool: PgPool) -> impl Fn(&mut ServiceCo
     }
 }
 
-fn routes(cfg: &mut ServiceConfig) {
+pub fn routes(cfg: &mut ServiceConfig) {
     cfg.service(sign_in);
     cfg.service(sign_out);
     cfg.service(validate_session);

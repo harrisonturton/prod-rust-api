@@ -7,7 +7,7 @@ edition = "2021"
 path = "src/lib.rs"
 
 [[bin]]
-path = "src/bin.rs"
+path = "src/main.rs"
 name = "backend"
 
 [dependencies]

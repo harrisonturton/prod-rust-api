@@ -1,5 +1,6 @@
 use actix_web::error::Error as ActixError;
 use actix_web::http::StatusCode;
+use actix_web::middleware::ErrorHandlerResponse;
 use actix_web::{HttpResponse, ResponseError};
 use serde::Serialize;
 use sqlx::Error as DatabaseError;
@@ -91,4 +92,16 @@ impl From<DatabaseError> for ServiceError {
             _ => ServiceError::server_error(),
         }
     }
+}
+
+pub fn handle_bad_request<B>(
+    res: actix_web::dev::ServiceResponse<B>,
+) -> actix_web::Result<ErrorHandlerResponse<B>> {
+    let (req, _) = res.into_parts();
+    let res = actix_web::dev::ServiceResponse::from_err(
+        crate::util::http::ServiceError::bad_request(),
+        req,
+    )
+    .map_into_right_body();
+    Ok(ErrorHandlerResponse::Response(res))
 }
