@@ -1,7 +1,7 @@
 export interface FakeSchema {
-    stringParam: string,
-    numberParam: number,
+    stringParam: string;
+    numberParam: number;
     nestedObjectParam: {
-        booleanParam: boolean,
-    }
+        booleanParam: boolean;
+    };
 }

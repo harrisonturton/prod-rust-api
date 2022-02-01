@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { getEditorRoute } from "base/routes";
+import { getEditorRoute } from "base/router";
 import { UsernamePasswordForm } from "./signin_form";
 import styles from "./styles.module.scss";
 

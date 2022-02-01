@@ -11,10 +11,7 @@
                     "type": "string"
                 }
             },
-            "required": [
-                "email",
-                "password"
-            ],
+            "required": ["email", "password"],
             "type": "object"
         },
         "SignInResponse": {
@@ -23,9 +20,7 @@
                     "type": "string"
                 }
             },
-            "required": [
-                "token"
-            ],
+            "required": ["token"],
             "type": "object"
         },
         "SignOutRequest": {
@@ -34,9 +29,7 @@
                     "type": "string"
                 }
             },
-            "required": [
-                "token"
-            ],
+            "required": ["token"],
             "type": "object"
         },
         "SignOutResponse": {
@@ -44,4 +37,3 @@
         }
     }
 }
-

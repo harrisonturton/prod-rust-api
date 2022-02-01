@@ -15,7 +15,7 @@ describe("checkSchema", () => {
             stringParam: "string",
             nestedObjectParam: {
                 booleanParam: true,
-            }
+            },
         };
         let schema = fakeSchema.definitions.FakeSchema;
         checkSchema(value, schema);

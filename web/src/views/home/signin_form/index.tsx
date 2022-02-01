@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { TextField } from "base/form";
 import { Button } from "base/button";
+import { Router, getEditorRoute } from "base/router";
 import styles from "./styles.module.scss";
 
 export const UsernamePasswordForm = () => {
+    let router = new Router();
+
     let [email, setEmail] = useState<string>("");
     let [emailError, setEmailError] = useState<string | null>(null);
 
@@ -30,6 +33,8 @@ export const UsernamePasswordForm = () => {
         setLoading(true);
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setLoading(false);
+        router.pushRoute(getEditorRoute());
+        console.log(getEditorRoute());
     };
 
     return (
