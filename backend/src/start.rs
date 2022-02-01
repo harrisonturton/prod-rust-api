@@ -12,17 +12,36 @@ use sqlx::PgPool;
 use std::io;
 use std::net::TcpListener;
 
+macro_rules! create_api {
+    (
+        $(
+            ($route:expr, $service_data:expr, $route_config:expr),
+        )+
+    ) => {
+        App::new()
+            $(
+                .app_data(Data::new($service_data))
+                .service(scope($route).configure($route_config))
+            )+
+    };
+}
+
 pub fn start(
     config: Config,
     listener: TcpListener,
-    // Note: `PgPool` is threadsafe and cheap to clone.
+    // `PgPool` is threadsafe and cheap to clone.
     db_pool: PgPool,
 ) -> Result<Server, io::Error> {
     let server = HttpServer::new(move || {
-        // Middleware
         let user_service = user::UserService::new(db_pool.clone());
         let auth_service =
             auth::AuthService::new(config.auth.clone(), db_pool.clone(), user_service.clone());
+
+        let app = create_api! {
+            ("/auth", auth_service, auth::routes),
+            ("/user", user_service, user::routes),
+            ("/health", db_pool.clone(), health::routes),
+        };
 
         // By default, actix returns the message of `Json` deserialzation errors
         // directly to the client. This catches those errors and returns a
@@ -39,19 +58,8 @@ pub fn start(
             .supports_credentials()
             .max_age(3600);
 
-        App::new()
-            .wrap(Logger::default())
+        app.wrap(Logger::default())
             .app_data(Data::new(config.clone()))
-            // User service
-            .app_data(Data::new(user_service))
-            .service(scope("/user").configure(user::routes))
-            // Auth service
-            .app_data(Data::new(auth_service))
-            .service(scope("/auth").configure(auth::routes))
-            // Healthcheck endpoints
-            .app_data(Data::new(db_pool.clone()))
-            .service(scope("health").configure(health::routes))
-            // Other config
             .wrap(error_handlers)
             .wrap(cors)
     })

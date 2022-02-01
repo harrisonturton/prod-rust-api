@@ -1,4 +1,3 @@
-use crate::util::request::{RequestContext, Identity, ServiceIdentity};
 use super::auth_api::{SignInRequest, SignInResponse};
 use super::auth_api::{SignOutRequest, SignOutResponse};
 use super::auth_api::{ValidateTokenRequest, ValidateTokenResponse};
@@ -9,6 +8,7 @@ use crate::services::user::FindUserRequest;
 use crate::services::user::UserService;
 use crate::util::hash::{generate_token, Hash};
 use crate::util::http::{Result, ServiceError};
+use crate::util::request::{Identity, RequestContext, ServiceIdentity};
 use crate::util::time;
 use sqlx::PgPool;
 

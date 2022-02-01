@@ -41,7 +41,7 @@ impl RequestContext {
 
     pub fn service(service: ServiceIdentity) -> RequestContext {
         RequestContext {
-            identity: Identity::Service(service)
+            identity: Identity::Service(service),
         }
     }
 }

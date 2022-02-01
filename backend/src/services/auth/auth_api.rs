@@ -1,7 +1,7 @@
-use crate::util::request::RequestContext;
 use super::auth_service::AuthService;
 use crate::config::Config;
 use crate::util::http::Result;
+use crate::util::request::RequestContext;
 use actix_web::cookie::Cookie;
 use actix_web::post;
 use actix_web::web::{Data, Json, ServiceConfig};
@@ -36,7 +36,6 @@ async fn sign_in(
 ) -> Result<HttpResponse> {
     let res = service.into_inner().sign_in(&ctx, req.into_inner()).await?;
     let mut cookie = Cookie::new(&config.auth.sat_cookie_name, &res.token);
-    //cookie.set_domain("localhost");
     cookie.set_path("/");
     cookie.set_same_site(None);
     cookie.set_http_only(true);
