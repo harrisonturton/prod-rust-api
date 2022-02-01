@@ -29,15 +29,19 @@
 
     &:active {
         background-color: $violet-900;
+        border-color: $violet-900;
     }
 
     &:disabled {
         cursor: not-allowed;
+        box-shadow: none;
         background-color: $violet-900;
+        border-color: $violet-900;
     }
 
     &.loading {
         cursor: progress;
+        box-shadow: none;
         background-color: $violet-900;
     }
 }
