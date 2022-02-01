@@ -1,5 +1,5 @@
 import { HttpService } from "services/http";
-import { checkSchema, Schema } from "services/schema";
+import { checkSchema, Schema } from "services/schema/schema";
 
 export interface GetRoute {
     path: string;
@@ -54,9 +54,9 @@ export class ApiClient {
         route: PostRoute
     ): Promise<Res> {
         let { path, request, response } = route;
-        let url = `${this.base}${route.path}`;
+        let url = `${this.base}${path}`;
         checkSchema(req, request, `bad request schema on POST ${url}`);
-        let res = await this.httpService.get(path);
+        let res = await this.httpService.post(url, req);
         checkSchema(res, response, `bad response schema on POST ${url}`);
         return res as Res;
     }

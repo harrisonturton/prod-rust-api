@@ -1,3 +1,4 @@
+@use "sass:color";
 @import "base/styles/_font";
 @import "base/styles/_colors";
 @import "base/styles/_grid";
@@ -19,4 +20,12 @@
 .formError {
     font-size: $font-size-sm;
     color: $gray-300;
+}
+
+.errorContainer {
+    padding: $space-xs;
+    border-radius: $border-radius-sm;
+    background-color: fade-out($red-700, $amount: 0.7);
+    color: fade-out($red-200, $amount: 0.1);
+    font-size: $font-size-sm;
 }

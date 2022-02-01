@@ -34,8 +34,12 @@ export class HttpClient implements HttpService {
      * @returns JSON body of the response.
      */
     async post(path: string, body?: object): Promise<object> {
-        let res = await fetch(this.baseUrl + path, {
+        console.log("POSTING", `${this.baseUrl}/${path}`, body);
+        let res = await fetch(`${this.baseUrl}/${path}`, {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(body),
         });
         return res.json();
