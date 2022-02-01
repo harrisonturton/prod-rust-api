@@ -1,25 +1,17 @@
+use crate::util::request::RequestContext;
 use super::auth_service::AuthService;
-use crate::config::AuthConfig;
-use crate::services::user::UserService;
+use crate::config::Config;
 use crate::util::http::Result;
 use actix_web::cookie::Cookie;
 use actix_web::post;
 use actix_web::web::{Data, Json, ServiceConfig};
 use actix_web::HttpResponse;
 use serde::{Deserialize, Serialize};
-use sqlx::PgPool;
 
-const SESSION_ID_COOKIE_NAME: &str = "app_session_id";
-
-pub fn configure(pool: PgPool, settings: AuthConfig) -> impl Fn(&mut ServiceConfig) {
-    move |cfg| {
-        let user_service = UserService::new(pool.clone());
-        let auth_service = AuthService::new(settings.clone(), pool.clone(), user_service);
-        cfg.app_data(Data::new(auth_service));
-        cfg.service(sign_in);
-        cfg.service(sign_out);
-        cfg.service(validate_session);
-    }
+pub fn routes(cfg: &mut ServiceConfig) {
+    cfg.service(sign_in);
+    cfg.service(sign_out);
+    cfg.service(validate_session);
 }
 
 // Don't derive `Debug` to make it harder to log passwords.
@@ -36,11 +28,18 @@ pub struct SignInResponse {
 }
 
 #[post("/sign_in")]
-async fn sign_in(service: Data<AuthService>, req: Json<SignInRequest>) -> Result<HttpResponse> {
-    let res = service.into_inner().sign_in(req.into_inner()).await?;
-    let mut cookie = Cookie::new(SESSION_ID_COOKIE_NAME, &res.token);
+async fn sign_in(
+    config: Data<Config>,
+    service: Data<AuthService>,
+    ctx: RequestContext,
+    req: Json<SignInRequest>,
+) -> Result<HttpResponse> {
+    let res = service.into_inner().sign_in(&ctx, req.into_inner()).await?;
+    let mut cookie = Cookie::new(&config.auth.sat_cookie_name, &res.token);
+    //cookie.set_domain("localhost");
     cookie.set_path("/");
-    cookie.set_http_only(false);
+    cookie.set_same_site(None);
+    cookie.set_http_only(true);
     cookie.set_secure(false);
     let http_res = HttpResponse::Ok().cookie(cookie).json(res);
     Ok(http_res)

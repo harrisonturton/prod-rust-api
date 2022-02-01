@@ -10,4 +10,5 @@ password = "postgres"
 database = "editor"
 
 [auth]
-sat_cookie_lifetime_mins = 1 # 720 # 12 hours in minutes
+sat_cookie_name = "app_session_id"
+sat_cookie_lifetime_mins = 720 # 12 hours in minutes

@@ -1,23 +1,10 @@
 use super::user_service::UserService;
 use super::User;
 use crate::util::http::Result;
-use crate::util::middleware::CheckLogin;
-use actix_web::web::{scope, Data, Json, ServiceConfig};
+use crate::util::request::RequestContext;
+use actix_web::web::{Data, Json, ServiceConfig};
 use actix_web::{get, post};
 use serde::{Deserialize, Serialize};
-use sqlx::PgPool;
-
-pub fn configure(pool: PgPool, login_middleware: CheckLogin) -> impl Fn(&mut ServiceConfig) {
-    move |cfg| {
-        let user_service = UserService::new(pool.clone());
-        cfg.service(
-            scope("/user")
-                .wrap(login_middleware.clone())
-                .app_data(Data::new(user_service))
-                .configure(routes),
-        );
-    }
-}
 
 pub fn routes(cfg: &mut ServiceConfig) {
     cfg.service(list_users);
@@ -31,8 +18,11 @@ pub struct ListUsersResponse {
 }
 
 #[get("/")]
-async fn list_users(service: Data<UserService>) -> Result<Json<ListUsersResponse>> {
-    service.into_inner().list_users().await.map(Json)
+async fn list_users(
+    service: Data<UserService>,
+    ctx: RequestContext,
+) -> Result<Json<ListUsersResponse>> {
+    service.into_inner().list_users(&ctx).await.map(Json)
 }
 
 #[derive(Debug, Deserialize)]
@@ -50,9 +40,10 @@ pub struct FindUserResponse {
 #[post("/")]
 async fn find_user(
     service: Data<UserService>,
+    ctx: RequestContext,
     req: Json<FindUserRequest>,
 ) -> Result<Json<FindUserResponse>> {
-    service.find_user(req.into_inner()).await.map(Json)
+    service.find_user(&ctx, req.into_inner()).await.map(Json)
 }
 
 #[derive(Debug, Deserialize)]
@@ -69,7 +60,8 @@ pub struct CreateUserResponse {
 #[post("/new")]
 async fn create_user(
     service: Data<UserService>,
+    ctx: RequestContext,
     req: Json<CreateUserRequest>,
 ) -> Result<Json<CreateUserResponse>> {
-    service.create_user(req.into_inner()).await.map(Json)
+    service.create_user(&ctx, req.into_inner()).await.map(Json)
 }

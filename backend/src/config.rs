@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-pub static CONFIG_FILE: &str = "Config";
+pub static CONFIG_FILE: &str = "config";
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
@@ -26,6 +26,7 @@ pub struct DatabaseConfig {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct AuthConfig {
+    pub sat_cookie_name: String,
     pub sat_cookie_lifetime_mins: u32,
 }
 

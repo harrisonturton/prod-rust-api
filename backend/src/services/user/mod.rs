@@ -1,3 +1,4 @@
+mod user_access_checker;
 mod user_api;
 mod user_model;
 mod user_repo;

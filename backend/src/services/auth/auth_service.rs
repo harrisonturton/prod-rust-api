@@ -1,3 +1,4 @@
+use crate::util::request::{RequestContext, Identity, ServiceIdentity};
 use super::auth_api::{SignInRequest, SignInResponse};
 use super::auth_api::{SignOutRequest, SignOutResponse};
 use super::auth_api::{ValidateTokenRequest, ValidateTokenResponse};
@@ -10,6 +11,10 @@ use crate::util::hash::{generate_token, Hash};
 use crate::util::http::{Result, ServiceError};
 use crate::util::time;
 use sqlx::PgPool;
+
+const SERVICE_IDENTITY: &RequestContext = &RequestContext {
+    identity: Identity::Service(ServiceIdentity::AuthService),
+};
 
 #[derive(Clone)]
 pub struct AuthService {
@@ -27,13 +32,13 @@ impl AuthService {
         }
     }
 
-    pub async fn sign_in(&self, req: SignInRequest) -> Result<SignInResponse> {
+    pub async fn sign_in(&self, _: &RequestContext, req: SignInRequest) -> Result<SignInResponse> {
         let find_user_req = FindUserRequest::ByEmail {
             by_email: req.email,
         };
         let find_user_res = self
             .user_service
-            .find_user(find_user_req)
+            .find_user(SERVICE_IDENTITY, find_user_req)
             .await
             .map_err(|_| ServiceError::unauthorized())?;
         let user = find_user_res.user;
@@ -64,11 +69,12 @@ impl AuthService {
     ) -> Result<ValidateTokenResponse> {
         let session = auth_repo::find_session_by_token(&self.db, &req.token).await?;
         let session_duration = time::now().signed_duration_since(session.created_at);
+        let max_session_duration = self.config.sat_cookie_lifetime_mins * 60;
         log::info!(
-            "signed duration since token was created: {}",
-            session_duration
+            "signed duration since token was created: {}s out of max {}s\n",
+            session_duration,
+            max_session_duration
         );
-        let max_session_duration = self.config.sat_cookie_lifetime_mins;
         let is_valid = session_duration <= chrono::Duration::minutes(max_session_duration.into());
         Ok(ValidateTokenResponse { is_valid })
     }
