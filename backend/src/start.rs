@@ -31,6 +31,12 @@ pub fn start(
         let auth_service = auth::configure(db_pool.clone(), config.auth.clone());
         let health_service = health::configure(db_pool.clone());
 
+        let cors = actix_cors::Cors::default()
+            .allowed_origin("http://localhost:3000")
+            .allowed_methods(vec!["GET", "POST"])
+            .allowed_headers(vec!["Content-Type"])
+            .max_age(3600);
+
         // By default, actix returns the message of `Json` deserialzation errors
         // directly to the client. This catches those errors and returns a
         // `ServiceError::bad_request()` instead, like all our other endpoints.
@@ -44,6 +50,7 @@ pub fn start(
             .service(scope("/health").configure(health_service))
             .service(scope("/user").wrap(auth).configure(user_service))
             .wrap(error_handlers)
+            .wrap(cors)
     })
     .listen(listener)?
     .run();
