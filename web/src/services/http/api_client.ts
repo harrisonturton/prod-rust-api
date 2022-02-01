@@ -1,5 +1,5 @@
 import { HttpService } from "services/http";
-import { rejectInvalidSchema, Schema } from "services/schema";
+import { checkSchema, Schema } from "services/schema";
 
 export interface GetRoute {
     path: string;
@@ -34,9 +34,10 @@ export class ApiClient {
      * @returns the response body on success.
      */
     async get<Res extends object>(route: GetRoute): Promise<Res> {
-        let path = `${this.base}${route.path}`;
-        let res = await this.httpService.get(path);
-        rejectInvalidSchema(res, route.response);
+        let { path, response } = route;
+        let url = `${this.base}${path}`;
+        let res = await this.httpService.get(url);
+        checkSchema(res, response, `bad request schema on GET ${url}`);
         return res as Res;
     }
 
@@ -52,10 +53,11 @@ export class ApiClient {
         req: Req,
         route: PostRoute
     ): Promise<Res> {
-        rejectInvalidSchema(req, route.request);
-        let path = `${this.base}${route.path}`;
+        let { path, request, response } = route;
+        let url = `${this.base}${route.path}`;
+        checkSchema(req, request, `bad request schema on POST ${url}`);
         let res = await this.httpService.get(path);
-        rejectInvalidSchema(res, route.response);
+        checkSchema(res, response, `bad response schema on POST ${url}`);
         return res as Res;
     }
 }

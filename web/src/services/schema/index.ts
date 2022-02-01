@@ -45,11 +45,7 @@ export function getValidator(schema: Schema): ValidateFunction {
  * @param schema the schema you want to test the value against.
  * @param value the value you want to validate.
  */
-export function rejectInvalidSchema(
-    value: object,
-    schema: Schema,
-    message?: string
-) {
+export function checkSchema(value: object, schema: Schema, message?: string) {
     let validate = getValidator(schema);
     if (!validate(value)) {
         throw Error(message ?? "value rejected by schema");
