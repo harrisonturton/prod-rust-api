@@ -1,0 +1,34 @@
+{
+    "$id": "schema_fake",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "FakeSchema": {
+            "properties": {
+                "nestedObjectParam": {
+                    "properties": {
+                        "booleanParam": {
+                            "type": "boolean"
+                        }
+                    },
+                    "required": [
+                        "booleanParam"
+                    ],
+                    "type": "object"
+                },
+                "numberParam": {
+                    "type": "number"
+                },
+                "stringParam": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "nestedObjectParam",
+                "numberParam",
+                "stringParam"
+            ],
+            "type": "object"
+        }
+    }
+}
+

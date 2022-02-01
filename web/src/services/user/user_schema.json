@@ -8,7 +8,9 @@
                     "type": "string"
                 }
             },
-            "required": ["by_id"],
+            "required": [
+                "by_id"
+            ],
             "type": "object"
         },
         "GetUserResponse": {
@@ -17,7 +19,9 @@
                     "$ref": "user#/definitions/User"
                 }
             },
-            "required": ["user"],
+            "required": [
+                "user"
+            ],
             "type": "object"
         },
         "User": {
@@ -33,8 +37,13 @@
                     "type": "string"
                 }
             },
-            "required": ["created_at", "email", "id"],
+            "required": [
+                "created_at",
+                "email",
+                "id"
+            ],
             "type": "object"
         }
     }
 }
+
