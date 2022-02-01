@@ -13,12 +13,12 @@ export interface AuthService {
 }
 
 export class AuthClient implements AuthService {
-    private static BASE: string = "auth";
+    private static SERVICE_SLUG: "auth" = "auth";
 
     private readonly client: ApiClient;
 
     constructor(httpService: HttpService) {
-        this.client = new ApiClient(AuthClient.BASE, httpService);
+        this.client = new ApiClient(AuthClient.SERVICE_SLUG, httpService);
     }
 
     signIn(req: SignInRequest): Promise<SignInResponse> {
