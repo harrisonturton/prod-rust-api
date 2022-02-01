@@ -5,7 +5,6 @@ export interface GetUserRequest {
 export interface GetUserResponse {
     readonly user: User;
 }
-
 export interface User {
     readonly id: string;
     readonly email: string;

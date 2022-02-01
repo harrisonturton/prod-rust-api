@@ -1,0 +1,7 @@
+@import "base/styles/grid";
+
+.spinner {
+    display: block;
+    width: calc($space-xxxs * 5);
+    height: calc($space-xxxs * 5);
+}

@@ -6,8 +6,10 @@ export interface TextFieldProps {
     className?: string;
     type?: "text" | "password";
     placeholder?: string;
+    valid?: boolean;
     value: string;
     tabIndex?: number;
+    required?: boolean;
     autoFocus?: boolean;
     onChange: (value: string) => void;
 }
@@ -18,6 +20,8 @@ export const TextField = ({
     placeholder,
     tabIndex,
     value,
+    valid = true,
+    required,
     autoFocus,
     onChange,
 }: TextFieldProps) => {
@@ -25,53 +29,19 @@ export const TextField = ({
         onChange(e.target.value);
         e.preventDefault();
     };
-
+    const textfieldClassNames = classNames(styles.textField, className, {
+        [styles.invalid]: !valid,
+    });
     return (
         <input
+            required={required}
             tabIndex={tabIndex}
-            className={classNames(styles.textField, className)}
+            className={textfieldClassNames}
             type={type}
             value={value}
             placeholder={placeholder}
             autoFocus={autoFocus}
             onChange={handleInputChanged}
         />
-    );
-};
-
-export interface ButtonProps {
-    className?: string;
-    loading?: boolean;
-    disabled?: boolean;
-    label: string;
-    tabIndex?: number;
-    autoFocus?: boolean;
-    onClick?: () => void;
-}
-
-export const Button = ({
-    className,
-    label,
-    loading = false,
-    disabled = false,
-    autoFocus,
-    tabIndex,
-    onClick,
-}: ButtonProps) => {
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.();
-    };
-    return (
-        <button
-            tabIndex={tabIndex}
-            role="button"
-            type="button"
-            autoFocus={autoFocus}
-            className={classNames(styles.button, className)}
-            disabled={disabled || loading}
-            onClick={handleClick}
-        >
-            {label}
-        </button>
     );
 };

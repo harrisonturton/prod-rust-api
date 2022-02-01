@@ -1,0 +1,43 @@
+@use "sass:color";
+@import "base/styles/colors";
+@import "base/styles/grid";
+@import "base/styles/font";
+
+.button {
+    background-color: $violet-700;
+    color: $violet-200;
+    padding: $space-xxs;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-md;
+    height: calc($space-xs * 3);
+    display: flex;
+    justify-content: center;
+    border: 1px solid $violet-700;
+
+    &:hover:not(:active):not(:disabled) {
+        cursor: pointer;
+        color: $white;
+        background-color: $violet-600;
+    }
+
+    &:focus {
+        color: $white;
+        background-color: $violet-700;
+        box-shadow: 0px 0px $space-xxs fade-out($violet-500, $amount: 0.5);
+        border-color: $violet-400;
+    }
+
+    &:active {
+        background-color: $violet-900;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        background-color: $violet-900;
+    }
+
+    &.loading {
+        cursor: progress;
+        background-color: $violet-900;
+    }
+}

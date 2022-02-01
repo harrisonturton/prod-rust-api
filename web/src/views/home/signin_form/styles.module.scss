@@ -1,26 +1,12 @@
-@use "sass:color";
 @import "base/styles/_font";
 @import "base/styles/_colors";
 @import "base/styles/_grid";
-
-.content {
-    @include page-root;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: color.scale($gray-800, $lightness: -25%);
-    padding-top: calc($grid-baseline * 20);
-}
 
 .signInLabel {
     font-size: $font-size-xl;
     color: $gray-200;
     padding-bottom: $space-lg;
     text-align: center;
-}
-
-.homeLabel {
-    display: block;
 }
 
 .formContainer {

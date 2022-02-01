@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import TabNav from "base/app-nav";
-import Toolbar from "base/toolbar";
-import FileTabs from "base/file-tabs";
-import StatusBar from "base/status-bar";
-import createFileTree from "base/file-nav";
+import TabNav from "views/editor/app-nav";
+import Toolbar from "views/editor/toolbar";
+import FileTabs from "views/editor/file-tabs";
+import StatusBar from "views/editor/status-bar";
+import createFileTree from "views/editor/file-nav";
 import styles from "./styles.module.scss";
 
 const Editor: NextPage = () => {

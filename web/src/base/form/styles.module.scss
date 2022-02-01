@@ -1,0 +1,35 @@
+@use "sass:color";
+@import "base/styles/colors";
+@import "base/styles/grid";
+@import "base/styles/font";
+
+.textField {
+    background-color: $gray-800;
+    border: 1px solid $gray-700;
+    font-size: $font-size-md;
+    border-radius: $border-radius-sm;
+    padding-left: $space-xxs;
+    padding-right: $space-xxs;
+    color: $gray-300;
+    height: calc($space-xs * 3);
+
+    &.invalid {
+        border: 1px solid fade-out($red-500, $amount: 0.3);
+        background-color: fade-out($red-900, $amount: 0.9);
+    }
+
+    &:focus {
+        border-color: $violet-500;
+        background-color: fade-out($violet-500, $amount: 0.9);
+        box-shadow: 0px 0px $space-xxs fade-out($violet-500, $amount: 0.7);
+    }
+
+    &:hover:not(:focus):not(.invalid) {
+        background-color: $gray-700;
+        border-color: $gray-600;
+    }
+
+    &::placeholder {
+        color: $gray-400;
+    }
+}
