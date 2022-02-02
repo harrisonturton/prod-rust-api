@@ -4,44 +4,85 @@
 @import "base/styles/font";
 
 .button {
-    background-color: $violet-700;
-    color: $violet-200;
     padding: $space-xxs;
     border-radius: $border-radius-sm;
     font-size: $font-size-md;
     height: calc($space-xs * 3);
     display: flex;
     justify-content: center;
-    border: 1px solid $violet-700;
 
-    &:hover:not(:active):not(:disabled) {
-        cursor: pointer;
-        color: $white;
-        background-color: $violet-600;
-    }
-
-    &:focus {
-        color: $white;
+    &.primary {
         background-color: $violet-700;
-        box-shadow: 0px 0px $space-xxs fade-out($violet-500, $amount: 0.5);
-        border-color: $violet-400;
+        color: $violet-200;
+        border: 1px solid $violet-700;
+
+        &:hover:not(:active):not(:disabled) {
+            cursor: pointer;
+            color: $white;
+            background-color: $violet-600;
+        }
+
+        &:focus {
+            color: $white;
+            background-color: $violet-700;
+            box-shadow: 0px 0px $space-xxs fade-out($violet-500, $amount: 0.5);
+            border-color: $violet-400;
+        }
+
+        &:active {
+            background-color: $violet-900;
+            border-color: $violet-900;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            box-shadow: none;
+            background-color: $violet-900;
+            border-color: $violet-900;
+        }
+
+        &.loading {
+            cursor: progress;
+            box-shadow: none;
+            background-color: $violet-900;
+        }
     }
 
-    &:active {
-        background-color: $violet-900;
-        border-color: $violet-900;
-    }
+    &.secondary {
+        background-color: $gray-600;
+        color: $gray-200;
+        border: 1px solid $gray-600;
+        font-size: $font-size-sm;
 
-    &:disabled {
-        cursor: not-allowed;
-        box-shadow: none;
-        background-color: $violet-900;
-        border-color: $violet-900;
-    }
+        &:hover:not(:active):not(:disabled) {
+            cursor: pointer;
+            color: $white;
+            background-color: $gray-500;
+        }
 
-    &.loading {
-        cursor: progress;
-        box-shadow: none;
-        background-color: $violet-900;
+        &:focus {
+            color: $white;
+            background-color: $gray-600;
+            box-shadow: 0px 0px $space-xxs fade-out($gray-500, $amount: 0.5);
+            border-color: $gray-400;
+        }
+
+        &:active {
+            background-color: $gray-700;
+            border-color: $gray-700;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+            box-shadow: none;
+            background-color: $gray-700;
+            border-color: $gray-700;
+        }
+
+        &.loading {
+            cursor: progress;
+            box-shadow: none;
+            background-color: $gray-700;
+        }
     }
 }

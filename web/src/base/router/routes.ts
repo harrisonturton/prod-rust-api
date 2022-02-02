@@ -12,6 +12,10 @@ export interface Route {
     query?: QueryParams;
 }
 
+export const getIndexRoute = (): Route => ({
+    path: "/",
+});
+
 export const getEditorRoute = (query?: QueryParams): Route => ({
     path: "/editor",
     query,

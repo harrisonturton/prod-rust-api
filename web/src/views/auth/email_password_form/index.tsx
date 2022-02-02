@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { TextField } from "base/form";
 import { Button } from "base/button";
-import { Router, getEditorRoute } from "base/router";
+import { Router, getEditorRoute, getIndexRoute } from "base/router";
 import { AuthClient } from "services/auth";
 import { UserClient } from "services/user";
 import { HttpClient } from "services/http";
 import styles from "./styles.module.scss";
 import Link from "next/link";
 
-export const UsernamePasswordForm = () => {
+export const EmailPasswordForm = () => {
     let router = new Router();
 
     let [email, setEmail] = useState<string>("");
@@ -45,7 +45,7 @@ export const UsernamePasswordForm = () => {
             let res = await authClient.signIn({ email, password });
             let userRes = await userClient.listUsers();
             console.log("SUCCESS!", userRes);
-            router.pushRoute(getEditorRoute());
+            router.pushRoute(getIndexRoute());
         } catch (err) {
             console.log(`${err}`);
             setLoading(false);

@@ -1,2 +1,2 @@
-import HomeView from "views/home";
-export default HomeView;
+import WorkspaceSelectView from "views/workspace/workspace_select_view";
+export default WorkspaceSelectView;
