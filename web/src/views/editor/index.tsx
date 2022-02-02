@@ -7,8 +7,26 @@ import StatusBar from "views/editor/status-bar";
 import createFileTree from "views/editor/file-nav";
 import styles from "./styles.module.scss";
 
+import { HttpClient } from "services/http";
+import { UserClient, User } from "services/user";
+import { useEffect, useState } from "react";
+
 const Editor: NextPage = () => {
     const { FileTree } = createFileTree();
+
+    const [ users, setUsers ] = useState<User[]>([]);
+
+    const loadUsers = async () => {
+        let httpClient = new HttpClient("http://localhost:8000");
+        let userClient = new UserClient(httpClient);
+        let userRes = await userClient.listUsers();
+        setUsers(userRes.users);
+    };
+
+    useEffect(() => {
+        loadUsers();
+    }, []);
+
     return (
         <div>
             <Head>
@@ -22,6 +40,15 @@ const Editor: NextPage = () => {
                     <FileTree />
                     <div className={styles.fileContainer}>
                         <FileTabs />
+                        <div>
+                            {users.map(user => (
+                                <div>
+                                    <span>{user.id}</span>
+                                    <span>{user.email}</span>
+                                    <span>{user.created_at}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
                 <StatusBar />

@@ -37,7 +37,8 @@ export class ApiClient {
         let { path, response } = route;
         let url = `${this.base}${path}`;
         let res = await this.httpService.get(url);
-        checkSchema(res, response, `bad request schema on GET ${url}`);
+        console.log(JSON.stringify(res));
+        checkSchema(res, response, `bad response schema on GET ${url}`);
         return res as Res;
     }
 

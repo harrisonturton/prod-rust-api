@@ -20,7 +20,7 @@ for file in $FILES; do
 
 	base_dir=$(dirname $file)
 	id=$(basename $file "_schema.ts") # Make schema id the prefix to _schema.ts
-	typescript-json-schema --required --strictNullChecks --id $id $file "*" -o "${base_dir}/${id}_schema.json"
+	typescript-json-schema --aliasRefs --required --strictNullChecks --id $id $file "*" -o "${base_dir}/${id}_schema.json"
 
 	echo "[$index] Output: ${base_dir}/${id}_schema.json"
 	current_count=$(($current_count+1))

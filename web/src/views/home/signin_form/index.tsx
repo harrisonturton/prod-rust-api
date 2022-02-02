@@ -3,6 +3,7 @@ import { TextField } from "base/form";
 import { Button } from "base/button";
 import { Router, getEditorRoute } from "base/router";
 import { AuthClient } from "services/auth";
+import { UserClient } from "services/user";
 import { HttpClient } from "services/http";
 import styles from "./styles.module.scss";
 import Link from "next/link";
@@ -40,10 +41,13 @@ export const UsernamePasswordForm = () => {
             setLoading(true);
             let httpClient = new HttpClient("http://localhost:8000");
             let authClient = new AuthClient(httpClient);
+            let userClient = new UserClient(httpClient);
             let res = await authClient.signIn({ email, password });
+            let userRes = await userClient.listUsers();
+            console.log("SUCCESS!", userRes);
             router.pushRoute(getEditorRoute());
         } catch (err) {
-            console.log(err);
+            console.log(`${err}`);
             setLoading(false);
             setFormError("Incorrect email or password");
         }
@@ -77,9 +81,7 @@ export const UsernamePasswordForm = () => {
             )}
             <Button label="Sign In" onClick={onSubmit} loading={loading} />
             {formError && (
-                <div className={styles.errorContainer}>
-                    {formError}
-                </div>
+                <div className={styles.errorContainer}>{formError}</div>
             )}
             <Link href={getEditorRoute()}>
                 <a className={styles.homeLabel}>Don't have an account?</a>

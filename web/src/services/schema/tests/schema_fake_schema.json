@@ -10,7 +10,9 @@
                             "type": "boolean"
                         }
                     },
-                    "required": ["booleanParam"],
+                    "required": [
+                        "booleanParam"
+                    ],
                     "type": "object"
                 },
                 "numberParam": {
@@ -20,8 +22,13 @@
                     "type": "string"
                 }
             },
-            "required": ["nestedObjectParam", "numberParam", "stringParam"],
+            "required": [
+                "nestedObjectParam",
+                "numberParam",
+                "stringParam"
+            ],
             "type": "object"
         }
     }
 }
+

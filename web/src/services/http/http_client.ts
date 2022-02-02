@@ -20,8 +20,9 @@ export class HttpClient implements HttpService {
      * @returns JSON body of the response.
      */
     async get(path: string): Promise<object> {
-        let res = await fetch(this.baseUrl + path, {
+        let res = await fetch(`${this.baseUrl}/${path}`, {
             method: "GET",
+            credentials: "include",
         });
         return res.json();
     }
@@ -34,13 +35,13 @@ export class HttpClient implements HttpService {
      * @returns JSON body of the response.
      */
     async post(path: string, body?: object): Promise<object> {
-        console.log("POSTING", `${this.baseUrl}/${path}`, body);
         let res = await fetch(`${this.baseUrl}/${path}`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(body),
+            credentials: "include",
         });
         return res.json();
     }

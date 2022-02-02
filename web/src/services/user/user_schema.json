@@ -2,39 +2,112 @@
     "$id": "user",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
-        "GetUserRequest": {
+        "CreateUserRequest": {
             "properties": {
-                "by_id": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             },
-            "required": ["by_id"],
+            "required": [
+                "email",
+                "password"
+            ],
             "type": "object"
         },
-        "GetUserResponse": {
+        "CreateUserResponse": {
             "properties": {
                 "user": {
                     "$ref": "user#/definitions/User"
                 }
             },
-            "required": ["user"],
+            "required": [
+                "user"
+            ],
+            "type": "object"
+        },
+        "FindUserByEmailRequest": {
+            "properties": {
+                "by_email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "by_email"
+            ],
+            "type": "object"
+        },
+        "FindUserByIdRequest": {
+            "properties": {
+                "by_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "by_id"
+            ],
+            "type": "object"
+        },
+        "FindUserRequest": {
+            "anyOf": [
+                {
+                    "$ref": "user#/definitions/FindUserByIdRequest"
+                },
+                {
+                    "$ref": "user#/definitions/FindUserByEmailRequest"
+                }
+            ]
+        },
+        "FindUserResponse": {
+            "properties": {
+                "user": {
+                    "$ref": "user#/definitions/User"
+                }
+            },
+            "required": [
+                "user"
+            ],
+            "type": "object"
+        },
+        "ListUsersResponse": {
+            "properties": {
+                "users": {
+                    "items": {
+                        "$ref": "user#/definitions/User"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "users"
+            ],
             "type": "object"
         },
         "User": {
             "properties": {
                 "created_at": {
-                    "format": "date-time",
                     "type": "string"
                 },
                 "email": {
+                    "type": "string"
+                },
+                "hash": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
                 }
             },
-            "required": ["created_at", "email", "id"],
+            "required": [
+                "created_at",
+                "email",
+                "hash",
+                "id"
+            ],
             "type": "object"
         }
     }
 }
+

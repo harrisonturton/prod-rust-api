@@ -1,5 +1,7 @@
 import Ajv from "ajv";
 import { Schema, ValidateFunction } from "ajv/dist/types";
+import authSchema from "services/auth/auth_schema.json";
+import userSchema from "services/user/user_schema.json";
 
 /**
  * This is exported so other modules can use the schema type without touching
@@ -51,3 +53,6 @@ export function checkSchema(value: object, schema: Schema, message?: string) {
         throw Error(message ?? "value rejected by schema");
     }
 }
+
+ajv.addSchema(authSchema);
+ajv.addSchema(userSchema);
