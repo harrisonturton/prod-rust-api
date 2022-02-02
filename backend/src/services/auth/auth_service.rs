@@ -32,7 +32,19 @@ impl AuthService {
         }
     }
 
-    pub async fn sign_in(&self, _: &RequestContext, req: SignInRequest) -> Result<SignInResponse> {
+    pub fn install(config: &AuthConfig, db: &PgPool, user_service: &UserService) -> AuthService {
+        AuthService {
+            config: config.clone(),
+            db: db.clone(),
+            user_service: user_service.clone(),
+        }
+    }
+
+    pub async fn sign_in(&self, ctx: &RequestContext, req: SignInRequest) -> Result<SignInResponse> {
+        // They're already signed in, so just return that token.
+        if let Identity::User(token) = &ctx.identity {
+            return Ok(SignInResponse{ token: token.clone() });
+        }
         let find_user_req = FindUserRequest::ByEmail {
             by_email: req.email,
         };

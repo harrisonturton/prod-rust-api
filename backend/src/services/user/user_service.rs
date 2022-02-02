@@ -7,6 +7,7 @@ use super::user_repo;
 use crate::util::hash::Hash;
 use crate::util::http::{Result, ServiceError};
 use crate::util::id_generator::generate_id;
+use crate::util::time::now;
 use crate::util::request::RequestContext;
 use sqlx::PgPool;
 
@@ -19,9 +20,11 @@ impl UserService {
     pub fn new(db: PgPool) -> UserService {
         UserService { db }
     }
-}
 
-impl UserService {
+    pub fn install(db: &PgPool) -> UserService {
+        UserService { db: db.clone() }
+    }
+
     pub async fn list_users(&self, ctx: &RequestContext) -> Result<ListUsersResponse> {
         access_checker::can_access_list_users(ctx)?;
         let users = user_repo::list_all_users(&self.db).await?;
@@ -54,7 +57,7 @@ impl UserService {
         let hash = Hash::hash(&password)
             .ok_or_else(ServiceError::server_error)?
             .serialize();
-        let user = User { id, email, hash };
+        let user = User { id, email, hash, created_at: now() };
         user_repo::create_user(&self.db, &user).await?;
         Ok(CreateUserResponse { user })
     }

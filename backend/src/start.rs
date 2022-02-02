@@ -12,16 +12,20 @@ use sqlx::PgPool;
 use std::io;
 use std::net::TcpListener;
 
-macro_rules! create_api {
+macro_rules! create_app {
     (
         $(
-            ($route:expr, $service_data:expr, $route_config:expr),
+            {
+                path: $path:expr,
+                routes: $routes:expr,
+                service: $service:expr,
+            },
         )+
     ) => {
         App::new()
             $(
-                .app_data(Data::new($service_data))
-                .service(scope($route).configure($route_config))
+                .app_data(Data::new($service))
+                .service(scope($path).configure($routes))
             )+
     };
 }
@@ -30,17 +34,44 @@ pub fn start(
     config: Config,
     listener: TcpListener,
     // `PgPool` is threadsafe and cheap to clone.
-    db_pool: PgPool,
+    db: PgPool,
 ) -> Result<Server, io::Error> {
     let server = HttpServer::new(move || {
-        let user_service = user::UserService::new(db_pool.clone());
-        let auth_service =
-            auth::AuthService::new(config.auth.clone(), db_pool.clone(), user_service.clone());
-
-        let app = create_api! {
-            ("/auth", auth_service, auth::routes),
-            ("/user", user_service, user::routes),
-            ("/health", db_pool.clone(), health::routes),
+        // Bit of a hack to replace dependency injection for now. Should replace
+        // this with a better ownership model that still allows services to talk
+        // to eachother. Maybe "I want to make a request, request" ...pass
+        // message to say "I want to make request to X" instead of references?
+        // And have some sort of message bus to get around it the ownership
+        // problem.  Would avoid lots of the cloning here, but not sure if
+        // that's worthwhile. Cloning from database pool is cheap.
+        //
+        // A "UserService" could be wrapped by a "UserServiceClient" that
+        // implements the same API (maybe use a trait), but passes messages
+        // through message bus instead. Client can then be trivially replaced
+        // with actual HTTP client later on!
+        let app = create_app! {
+            {
+                path: "/auth",
+                routes: auth::routes,
+                service: {
+                    let user_service = user::UserService::install(&db);
+                    let auth_service = auth::AuthService::install(&config.auth, &db, &user_service);
+                    auth_service
+                },
+            },
+            {
+                path: "/user",
+                routes: user::routes,
+                service: {
+                    let user_service = user::UserService::install(&db);
+                    user_service
+                },
+            },
+            {
+                path: "/health",
+                routes: health::routes,
+                service: db.clone(),
+            },
         };
 
         // By default, actix returns the message of `Json` deserialzation errors

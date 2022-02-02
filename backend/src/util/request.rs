@@ -53,14 +53,10 @@ impl FromRequest for RequestContext {
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
-            let config = match req.app_data::<Data<Config>>() {
-                Some(config) => config,
-                None => {
-                    let err = ServiceError::server_error()
-                        .with_message("RequestContext could not get AuthConfig");
-                    return Err(err);
-                }
-            };
+            let config = req.app_data::<Data<Config>>().ok_or_else(|| {
+                ServiceError::server_error()
+                    .with_message("RequestContext extractor could not get AuthCOnfig")
+            })?;
 
             let maybe_cookie = req.cookie(&config.auth.sat_cookie_name);
             let token = match maybe_cookie {
