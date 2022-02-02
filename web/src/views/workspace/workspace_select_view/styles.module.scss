@@ -4,11 +4,11 @@
 @import "base/styles/_grid";
 
 .workspaceListContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding-top: $space-lg;
+    align-self: center;
+    display: grid;
+    grid-row-gap: $space-xs;
+    padding: $space-lg;
+    padding-top: calc($space-lg * 3);
 }
 
 .card {
@@ -19,7 +19,7 @@
     padding: $space-xs;
     border-radius: $border-radius-sm;
     border: 1px solid $gray-700;
-    width: calc($grid-baseline * 50);
+    width: calc($grid-baseline * 70);
 
     &:hover {
         cursor: pointer;

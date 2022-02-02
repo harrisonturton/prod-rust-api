@@ -1,1 +1,1 @@
-export * from "./sign_in_view";
+export * from "./signin_view";
