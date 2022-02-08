@@ -1,14 +1,12 @@
-pub mod services;
-
-use backend::config;
-use backend::start::start;
+use crate::config;
+use crate::start::start;
 use sqlx::PgPool;
 use std::io;
 use std::net::TcpListener;
 
 // Starts the API server in the background on a random available port and return
 // the address it is being served on.
-async fn start_test_server() -> io::Result<String> {
+pub async fn start_test_server() -> io::Result<String> {
     let config = config::get_config().expect("failed to read config.");
     let database_uri = config::get_database_uri(&config.database);
     let conn_pool = PgPool::connect(&database_uri)
