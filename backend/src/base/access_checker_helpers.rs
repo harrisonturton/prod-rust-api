@@ -1,5 +1,5 @@
-use crate::util::http::ServiceError;
-use crate::util::request::{Identity, RequestContext};
+use crate::base::http::ServiceError;
+use crate::base::request::{Identity, RequestContext};
 
 pub fn reject_unauthorized(ctx: &RequestContext) -> Result<(), ServiceError> {
     if let Identity::User(_) = ctx.identity {

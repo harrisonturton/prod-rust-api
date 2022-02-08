@@ -4,11 +4,11 @@ use super::user_api::{CreateUserRequest, CreateUserResponse};
 use super::user_api::{FindUserRequest, FindUserResponse};
 use super::user_model::User;
 use super::user_repo;
-use crate::util::hash::Hash;
-use crate::util::http::{Result, ServiceError};
-use crate::util::id_generator::generate_id;
-use crate::util::time::now;
-use crate::util::request::RequestContext;
+use crate::base::hash::Hash;
+use crate::base::http::{Result, ServiceError};
+use crate::base::id_generator::generate_id;
+use crate::base::time::now;
+use crate::base::request::RequestContext;
 use sqlx::PgPool;
 
 #[derive(Clone)]

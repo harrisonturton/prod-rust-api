@@ -6,10 +6,10 @@ use super::auth_repo;
 use crate::config::AuthConfig;
 use crate::services::user::FindUserRequest;
 use crate::services::user::UserService;
-use crate::util::hash::{generate_token, Hash};
-use crate::util::http::{Result, ServiceError};
-use crate::util::request::{Identity, RequestContext, ServiceIdentity};
-use crate::util::time;
+use crate::base::hash::{generate_token, Hash};
+use crate::base::http::{Result, ServiceError};
+use crate::base::request::{Identity, RequestContext, ServiceIdentity};
+use crate::base::time;
 use sqlx::PgPool;
 
 const SERVICE_IDENTITY: &RequestContext = &RequestContext {

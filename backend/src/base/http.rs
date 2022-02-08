@@ -99,7 +99,7 @@ pub fn handle_bad_request<B>(
 ) -> actix_web::Result<ErrorHandlerResponse<B>> {
     let (req, _) = res.into_parts();
     let res = actix_web::dev::ServiceResponse::from_err(
-        crate::util::http::ServiceError::bad_request(),
+        crate::base::http::ServiceError::bad_request(),
         req,
     )
     .map_into_right_body();

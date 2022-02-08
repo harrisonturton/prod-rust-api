@@ -1,4 +1,4 @@
-use crate::util::time::Timestamp;
+use crate::base::time::Timestamp;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

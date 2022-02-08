@@ -1,6 +1,6 @@
-use crate::util::access_checker_helpers::reject_unauthorized;
-use crate::util::http::ServiceError;
-use crate::util::request::RequestContext;
+use crate::base::access_checker_helpers::reject_unauthorized;
+use crate::base::http::ServiceError;
+use crate::base::request::RequestContext;
 
 pub fn can_access_list_users(ctx: &RequestContext) -> Result<(), ServiceError> {
     reject_unauthorized(ctx)

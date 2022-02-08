@@ -1,7 +1,7 @@
 use crate::config::Config;
 use crate::services::auth::AuthService;
 use crate::services::auth::ValidateTokenRequest;
-use crate::util::http::ServiceError;
+use crate::base::http::ServiceError;
 use actix_web::dev::Payload;
 use actix_web::web::Data;
 use actix_web::{FromRequest, HttpRequest};

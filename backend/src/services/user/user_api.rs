@@ -1,7 +1,7 @@
 use super::user_service::UserService;
 use super::User;
-use crate::util::http::Result;
-use crate::util::request::RequestContext;
+use crate::base::http::Result;
+use crate::base::request::RequestContext;
 use actix_web::web::{Data, Json, ServiceConfig};
 use actix_web::{get, post};
 use serde::{Deserialize, Serialize};

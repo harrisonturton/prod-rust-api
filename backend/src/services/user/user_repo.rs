@@ -1,6 +1,6 @@
-use crate::util::time::Timestamp;
+use crate::base::time::Timestamp;
 use super::user_model::User;
-use crate::util::http::{Result, ServiceError};
+use crate::base::http::{Result, ServiceError};
 use sqlx::{query_as, PgPool};
 
 pub async fn find_user_by_id(pool: &PgPool, id: String) -> Result<User> {

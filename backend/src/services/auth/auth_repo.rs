@@ -1,6 +1,6 @@
 use super::auth_model::Session;
-use crate::util::http::{Result, ServiceError};
-use crate::util::time::Timestamp;
+use crate::base::http::{Result, ServiceError};
+use crate::base::time::Timestamp;
 use sqlx::{query_as, PgPool};
 
 pub async fn create_session(pool: &PgPool, session: &Session) -> Result<Session> {

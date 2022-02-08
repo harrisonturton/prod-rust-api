@@ -1,4 +1,4 @@
-use crate::util::request::{Identity, RequestContext};
+use crate::base::request::{Identity, RequestContext};
 use actix_web::web::{Data, HttpResponse, ServiceConfig};
 use actix_web::{get, http::StatusCode, Responder};
 use sqlx::PgPool;
