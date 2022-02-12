@@ -1,6 +1,6 @@
+use crate::base::http;
 use crate::config::Config;
 use crate::services::{auth, health, user};
-use crate::base::http;
 use actix_web::dev::Server;
 use actix_web::http::StatusCode;
 use actix_web::middleware::ErrorHandlers;

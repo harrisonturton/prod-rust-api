@@ -7,8 +7,8 @@ use super::user_repo;
 use crate::base::hash::Hash;
 use crate::base::http::{Result, ServiceError};
 use crate::base::id_generator::generate_id;
-use crate::base::time::now;
 use crate::base::request::RequestContext;
+use crate::base::time::now;
 use sqlx::PgPool;
 
 #[derive(Clone)]
@@ -57,7 +57,12 @@ impl UserService {
         let hash = Hash::hash(&password)
             .ok_or_else(ServiceError::server_error)?
             .serialize();
-        let user = User { id, email, hash, created_at: now() };
+        let user = User {
+            id,
+            email,
+            hash,
+            created_at: now(),
+        };
         user_repo::create_user(&self.db, &user).await?;
         Ok(CreateUserResponse { user })
     }

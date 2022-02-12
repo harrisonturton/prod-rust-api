@@ -1,0 +1,14 @@
+[server]
+host = "localhost"
+port = 8000
+
+[database]
+host = "postgres"
+port = 5432
+username = "postgres"
+password = "password"
+database = "editor"
+
+[auth]
+sat_cookie_name = "app_session_id"
+sat_cookie_lifetime_mins = 720 # 12 hours in minutes

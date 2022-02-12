@@ -1,7 +1,7 @@
 use super::auth_service::AuthService;
-use crate::config::Config;
 use crate::base::http::Result;
 use crate::base::request::RequestContext;
+use crate::config::Config;
 use actix_web::cookie::Cookie;
 use actix_web::post;
 use actix_web::web::{Data, Json, ServiceConfig};

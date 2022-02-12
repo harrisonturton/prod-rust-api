@@ -1,12 +1,12 @@
 [server]
-host = "127.0.0.1"
+host = "0.0.0.0"
 port = 8000
 
 [database]
-host = "127.0.0.1"
+host = "postgres"
 port = 5432
-username = "harrisonturton"
-password = "postgres"
+username = "postgres"
+password = "password"
 database = "editor"
 
 [auth]

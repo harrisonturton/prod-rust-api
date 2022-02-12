@@ -7,7 +7,7 @@ use std::net::TcpListener;
 // Starts the API server in the background on a random available port and return
 // the address it is being served on.
 pub async fn start_test_server() -> io::Result<String> {
-    let config = config::get_config().expect("failed to read config.");
+    let config = config::from_file("resources/config.local.toml").expect("failed to read config.");
     let database_uri = config::get_database_uri(&config.database);
     let conn_pool = PgPool::connect(&database_uri)
         .await

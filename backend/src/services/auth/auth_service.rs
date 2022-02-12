@@ -3,13 +3,13 @@ use super::auth_api::{SignOutRequest, SignOutResponse};
 use super::auth_api::{ValidateTokenRequest, ValidateTokenResponse};
 use super::auth_model::Session;
 use super::auth_repo;
-use crate::config::AuthConfig;
-use crate::services::user::FindUserRequest;
-use crate::services::user::UserService;
 use crate::base::hash::{generate_token, Hash};
 use crate::base::http::{Result, ServiceError};
 use crate::base::request::{Identity, RequestContext, ServiceIdentity};
 use crate::base::time;
+use crate::config::AuthConfig;
+use crate::services::user::FindUserRequest;
+use crate::services::user::UserService;
 use sqlx::PgPool;
 
 const SERVICE_IDENTITY: &RequestContext = &RequestContext {
@@ -40,10 +40,16 @@ impl AuthService {
         }
     }
 
-    pub async fn sign_in(&self, ctx: &RequestContext, req: SignInRequest) -> Result<SignInResponse> {
+    pub async fn sign_in(
+        &self,
+        ctx: &RequestContext,
+        req: SignInRequest,
+    ) -> Result<SignInResponse> {
         // They're already signed in, so just return that token.
         if let Identity::User(token) = &ctx.identity {
-            return Ok(SignInResponse{ token: token.clone() });
+            return Ok(SignInResponse {
+                token: token.clone(),
+            });
         }
         let find_user_req = FindUserRequest::ByEmail {
             by_email: req.email,

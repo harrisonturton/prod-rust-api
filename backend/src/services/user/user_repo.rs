@@ -1,6 +1,6 @@
-use crate::base::time::Timestamp;
 use super::user_model::User;
 use crate::base::http::{Result, ServiceError};
+use crate::base::time::Timestamp;
 use sqlx::{query_as, PgPool};
 
 pub async fn find_user_by_id(pool: &PgPool, id: String) -> Result<User> {
@@ -55,6 +55,11 @@ pub async fn create_user(pool: &PgPool, user: &User) -> Result<User> {
 impl From<(String, String, String, Timestamp)> for User {
     fn from(row: (String, String, String, Timestamp)) -> User {
         let (id, email, hash, created_at) = row;
-        User { id, email, hash, created_at }
+        User {
+            id,
+            email,
+            hash,
+            created_at,
+        }
     }
 }

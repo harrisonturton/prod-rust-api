@@ -1,7 +1,5 @@
 use serde::Deserialize;
 
-pub static CONFIG_FILE: &str = "config";
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct Config {
     pub server: ServerConfig,
@@ -30,9 +28,9 @@ pub struct AuthConfig {
     pub sat_cookie_lifetime_mins: u32,
 }
 
-pub fn get_config() -> Result<Config, config::ConfigError> {
+pub fn from_file(file: &str) -> Result<Config, config::ConfigError> {
     let mut settings = config::Config::default();
-    settings.merge(config::File::with_name(CONFIG_FILE))?;
+    settings.merge(config::File::with_name(file))?;
     settings.try_into()
 }
 
